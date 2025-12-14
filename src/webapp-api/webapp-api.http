@@ -1,0 +1,6 @@
+@webapp_api_HostAddress = http://localhost:5239
+
+GET {{webapp_api_HostAddress}}/posts/
+Accept: application/json
+
+###
