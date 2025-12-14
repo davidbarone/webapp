@@ -5,19 +5,17 @@ import Header from '@root/js/widgets/header/header.tsx';
 import Footer from '@root/js/widgets/footer/footer.tsx';
 import Main from '@root/js/widgets/main/main.tsx';
 import HomeRoute from '@root/js/routes/homeRoute';
-import { router } from '@root/js/lib/router';
+import { type RouteRuleArray } from '@root/js/lib/router';
 
 // Set up routing
-const routes = {
-  '/': HomeRoute,
-};
-
-router(routes);
+const routes: RouteRuleArray = [
+  { Name: 'Home', Path: '/', Handler: HomeRoute },
+];
 
 const x = (
   <div class="app">
-    {Header()}
-    {Main()}
+    {Header(routes)}
+    {Main(routes)}
     {Footer()}
   </div>
 );

@@ -13,29 +13,33 @@ routes in the router.js page. Check the
 routes dictionary.
 */
 
-type StringFunctionDictionary = {
-  [key: string]: (...args: any[]) => any;
+type RouteRule = {
+  Name: string;
+  Path: string;
+  Handler: (...args: any[]) => any;
 };
 
-export function router(routes: StringFunctionDictionary) {
+export type RouteRuleArray = RouteRule[];
+
+export function router(routes: RouteRuleArray, routeContainerId: string) {
   // Listen for hash changes
   window.addEventListener('hashchange', () => {
     const h = isNullOrEmpty(location.hash) ? '#/' : location.hash;
     const hash = parseRoute(h);
-    render(hash, routes);
+    render(hash, routes, routeContainerId);
   });
 
   // Initial render
   window.addEventListener('DOMContentLoaded', () => {
     const h = isNullOrEmpty(location.hash) ? '#/' : location.hash;
     const hash = parseRoute(h); //location.hash.slice(1) || '/';
-    render(hash, routes);
+    render(hash, routes, routeContainerId);
   });
 }
 
 // Render function: updates #app content
-function render(route, routes) {
-  const app = document.getElementById('route');
+function render(route, routes, id) {
+  const app = document.getElementById(id);
   if (app !== null) {
     if (route.length === 1) {
       // no parameters

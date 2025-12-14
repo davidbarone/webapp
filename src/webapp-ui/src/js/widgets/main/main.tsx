@@ -1,7 +1,8 @@
 import logo from '@root/assets/logo.png';
-import '@root/js/lib/router.tsx';
+import { type RouteRuleArray, router } from '@root/js/lib/router.tsx';
 
-export default function Main() {
+export default function Main(routes: RouteRuleArray) {
+  router(routes, 'route');
   return (
     <main>
       <div class="title">
