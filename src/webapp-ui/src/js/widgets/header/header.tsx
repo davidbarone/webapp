@@ -13,7 +13,7 @@ export default function Header(routes: RouteRuleArray) {
     <header>
       <div class="container-fixed">
         {routes.map((route) => (
-          <a href={`#/${route.Path}`}>{route.Name}</a>
+          <a href={`#${route.path}`}>{route.name}</a>
         ))}
       </div>
     </header>

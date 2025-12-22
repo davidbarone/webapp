@@ -50,6 +50,11 @@ Full stack web/api reference application (2025 edition).
     - [/src/main.ts](#srcmaints)
   - [Routing](#routing)
     - [/src/js/lib/router.tsx](#srcjslibroutertsx)
+  - [Reactivity and Components](#reactivity-and-components)
+    - [/src/js/lib/reactive.js](#srcjslibreactivejs)
+    - [/src/js/lib/component.tsx](#srcjslibcomponenttsx)
+  - [Environment Variables](#environment-variables)
+    - [/src/js/lib/environment.js](#srcjslibenvironmentjs)
   - [Set up Default App Structure Using TS + JSX](#set-up-default-app-structure-using-ts--jsx)
     - [/src/assets/logo.png](#srcassetslogopng)
     - [/src/css/style.css](#srccssstylecss)
@@ -1011,6 +1016,189 @@ const isNullOrEmpty = function (str: string) {
     (typeof str === 'string' && str.trim().length === 0) // empty or whitespace
   );
 };
+```
+
+## Reactivity and Components
+Modern UI frameworks provide reactivity and components.
+
+Reactivity is the mechanism where the user interface automatically updates when the app state changes. This frees up the developer to focus on the app's state instead of having to manually manage state of all the visual elements in a page.
+
+Components are reusable building blocks used to construct user interfaces. Components simplify the development process by allowing the developer to create reusable elements that can be used multiple times in a web project.
+
+Reactivity and components are two key elements that enable developer productivity and improve overall application robustness in modern web applications. All the modern frameworks have reactivity and components as core parts of their framework.
+
+Native Javascript supports a basic version of web components: https://developer.mozilla.org/en-US/docs/Web/API/Web_components. This consists of 3 main technologies:
+- Custom elements
+- Shadow DOM
+- HTML templates
+
+### /src/js/lib/reactive.js
+Provides a simpler reactivity model using getter and setters and a subscriber model:
+``` js
+export function reactiveProxy(data) {
+  const subscribers = new Set();
+
+  const proxy = new Proxy(data, {
+    get(target, prop) {
+      return target[prop];
+    },
+    set(target, prop, value) {
+      target[prop] = value;
+      subscribers.forEach((fn) => fn(prop, value));
+      return true;
+    },
+  });
+
+  proxy.subscribe = (fn) => subscribers.add(fn);
+  proxy.unsubscribe = (fn) => subscribers.delete(fn);
+
+  return proxy;
+}
+
+//https://dev.to/arnavk-09/simplest-reactivity-in-web-pages-using-vanilla-javascript-5ekp
+export function reactiveValue(initialValue) {
+  let value = initialValue;
+  const subscribers = [];
+
+  this.get = function get() {
+    return value;
+  };
+
+  this.set = function set(newValue) {
+    if (value !== newValue) {
+      value = newValue;
+      subscribers.forEach((subscriber) => subscriber());
+    }
+  };
+
+  this.subscribe = function subscribe(subscriber) {
+    subscribers.push(subscriber);
+  };
+
+  //return { get, set, subscribe };
+}
+
+export function reactiveExpression(fn, ...values) {
+  const result = fn(...values.map((value) => value.get()));
+  const dependencies = values.filter(
+    (value) =>
+      (value instanceof reactiveValue) | (value instanceof reactiveExpression)
+  );
+  const rv = new reactiveValue(result);
+
+  // subscribe to the dependencies, and update the expression
+  // whenever one or more of them change.
+  dependencies.forEach((dependency) => {
+    let a = rv;
+    dependency.subscribe(() => {
+      // only set derived if all values are defined
+      console.log(dependencies.map((v) => v.get()));
+      if (!dependencies.some((item) => item.get() === undefined)) {
+        a.set(fn(...dependencies.map((value) => value.get())));
+      }
+    });
+  });
+
+  this.get = rv.get;
+  this.set = rv.set;
+  this.subscribe = rv.subscribe;
+  //return rv;
+}
+```
+
+### /src/js/lib/component.tsx
+Provides a simple base class that can be used to create reusable components with reactivity:
+``` tsx
+import { reactiveValue, reactiveExpression } from '../lib/reactive';
+
+export class Component extends HTMLElement {
+  #props: Array<string> = [];
+
+  constructor() {
+    super();
+
+    // Attach a shadow DOM
+    this.attachShadow({ mode: 'open' });
+  }
+
+  get props(): Record<string, any> {
+    return this.#props;
+  }
+
+  propNames: string[] = Component.observedAttributes;
+
+  static get observedAttributes(): string[] {
+    return [];
+  }
+
+  attributeChangedCallback(name: string): void {
+    // update the props object
+    const value = this.getAttribute(name);
+
+    // if name does not exist, create a new reactiveValue
+    // otherwise, set the value.
+    if (!(name in this.#props)) {
+      this.#props[name] = new reactiveValue(null); // Assign a default value (e.g., null)
+      this.#props[name].subscribe(this.renderInternal.bind(this));
+    }
+    this.#props[name].set(value);
+    this.renderInternal();
+  }
+
+  connectedCallback() {
+    this.onLoad();
+
+    // Render content when the element is connected to the DOM
+    this.renderInternal();
+  }
+
+  onLoad = () => {};
+
+  renderInternal() {
+    if (this.shadowRoot) {
+      this.shadowRoot.innerHTML = '';
+      this.shadowRoot.appendChild(this.render());
+    }
+  }
+
+  render(): any {
+    return null;
+  }
+
+  getReactiveValue(value): reactiveValue {
+    const r = new reactiveValue(value);
+    r.subscribe(this.renderInternal.bind(this));
+    return r;
+  }
+
+  getReactiveExpression(fn, ...values): reactiveExpression {
+    const r = new reactiveExpression(fn, ...values);
+    r.subscribe(this.renderInternal.bind(this));
+    return r;
+  }
+}
+```
+
+## Environment Variables
+The Vite framework supports environment variables via `.env` files (https://vite.dev/guide/env-and-mode). However, I've adopted to roll a simple DIY envionment variables approach:
+
+### /src/js/lib/environment.js
+This exports a single variable: `API_URL`:
+``` js
+const config = {
+  development: {
+    API_URL: 'http://localhost:5017/',
+  },
+  production: {
+    API_URL: 'https://api.example.com/',
+  },
+};
+
+// Automatically detect the environment
+const ENV =
+  window.location.hostname === 'localhost' ? 'development' : 'production';
+
+export const API_URL = config[ENV].API_URL;
 ```
 
 ## Set up Default App Structure Using TS + JSX

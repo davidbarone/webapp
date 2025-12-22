@@ -5,11 +5,13 @@ import Header from '@root/js/widgets/header/header.tsx';
 import Footer from '@root/js/widgets/footer/footer.tsx';
 import Main from '@root/js/widgets/main/main.tsx';
 import HomeRoute from '@root/js/routes/homeRoute';
+import ReactiveRoute from '@root/js/routes/reactiveRoute';
 import { type RouteRuleArray } from '@root/js/lib/router';
 
 // Set up routing
 const routes: RouteRuleArray = [
-  { Name: 'Home', Path: '/', Handler: HomeRoute },
+  { name: 'Home', path: '/', handler: HomeRoute },
+  { name: 'Reactive', path: '/reactive', handler: ReactiveRoute },
 ];
 
 const x = (

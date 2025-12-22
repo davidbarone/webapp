@@ -14,9 +14,9 @@ routes dictionary.
 */
 
 type RouteRule = {
-  Name: string;
-  Path: string;
-  Handler: (...args: any[]) => any;
+  name: string;
+  path: string;
+  handler: (...args: any[]) => any;
 };
 
 export type RouteRuleArray = RouteRule[];
@@ -40,17 +40,20 @@ export function router(routes: RouteRuleArray, routeContainerId: string) {
 // Render function: updates #app content
 function render(route, routes, id) {
   const app = document.getElementById(id);
+  console.log(route);
   if (app !== null) {
     if (route.length === 1) {
       // no parameters
-      const view = routes[`/${route}`] || NotFound;
+      const view =
+        routes.find((r) => r.path === `/${route[0]}`).handler || NotFound;
       app.innerHTML = ''; //clear
       app.appendChild(view());
     } else {
       // parameter is included
       console.log(route);
       const id = parseInt(route[1]);
-      const view = routes[`/${route[0]}/:id`] || NotFound;
+      const view =
+        routes.find((r) => r.path === `/${route[0]}/:id`).handler || NotFound;
       console.log(view);
       console.log(id);
       app.innerHTML = ''; //clear
