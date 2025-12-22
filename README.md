@@ -65,6 +65,7 @@ Full stack web/api reference application (2025 edition).
   - [Other Items](#other-items)
     - [Coding Standards](#coding-standards)
   - [Testing](#testing)
+- [Full Debug using Visual Studio Code](#full-debug-using-visual-studio-code)
 - [Screenshots](#screenshots)
   - [Viewing all posts:](#viewing-all-posts)
   - [View / edit individual post](#view--edit-individual-post)
@@ -2181,6 +2182,13 @@ Paradigms, Coding Standards:
 - Clean Code (Ryan McDermott - focus on JavaScript): https://github.com/ryanmcdermott/clean-code-javascript
 
 ## Testing
+
+# Full Debug using Visual Studio Code
+The API (server) and web app (client) can both be run independently:
+- API: `dotnet run` will launch the application from source code
+- UI: `npm run dev` will start the development server, serving the web app to a browser
+
+Instead of running each layer separately, both launches can be combined in a `launch.json` file configured at the workspace level
 
 # Screenshots
 TO DO

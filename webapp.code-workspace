@@ -1,0 +1,67 @@
+{
+  "folders": [
+    {
+      "name": "root",
+      "path": "."
+    },
+    {
+      "name": "api",
+      "path": "src/webapp-api"
+    },
+    {
+      "name": "ui",
+      "path": "src/webapp-ui"
+    }
+  ],
+  "settings": {},
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "build-api",
+        "command": "dotnet",
+        "type": "process",
+        "args": [
+          "build",
+          "${workspaceFolder:api}/webapp-api.csproj"
+        ],
+        "problemMatcher": "$msCompile"
+      }
+    ]
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Backend (.NET Web API)",
+        "type": "coreclr",
+        "request": "launch",
+        "preLaunchTask": "build-api",
+        "program": "dotnet",
+        "args": [
+          "run",
+          "--project",
+          "${workspaceFolder:api}/webapp-api.csproj"
+        ],
+        "cwd": "${workspaceFolder:api}/bin/debug/net8.0",
+        "env": {
+          "ASPNETCORE_ENVIRONMENT": "Development"
+        }
+      },
+      {
+        "name": "Frontend (SPA)",
+        "request": "launch",
+        "cwd": "${workspaceFolder:ui}",
+        "runtimeExecutable": "npm",
+        "runtimeArgs": ["run", "dev"],
+        "console": "integratedTerminal"
+      }
+    ],
+    "compounds": [
+      {
+        "name": "Launch API + SPA",
+        "configurations": ["Backend (.NET Web API)", "Frontend (SPA)"]
+      }
+    ]
+  }
+}
