@@ -10,7 +10,8 @@ public static class AdminEndpoints
       return Results.Ok("Init() successful.");
     })
     .WithOpenApi()
-    .WithTags("Admin");
+    .WithTags("Admin")
+    .WithSummary("Initialises the database.");
   }
 
   private static void Init(IDataStore dataStore)
