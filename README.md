@@ -55,6 +55,8 @@ Full stack web/api reference application (2025 edition).
     - [/src/js/lib/component.tsx](#srcjslibcomponenttsx)
   - [Environment Variables](#environment-variables)
     - [/src/js/lib/environment.js](#srcjslibenvironmentjs)
+  - [Api Integration](#api-integration)
+    - [/src/js/lib/httpWrapper.ts](#srcjslibhttpwrapperts)
   - [Set up Default App Structure Using TS + JSX](#set-up-default-app-structure-using-ts--jsx)
     - [/src/assets/logo.png](#srcassetslogopng)
     - [/src/css/style.css](#srccssstylecss)
@@ -1202,6 +1204,12 @@ const ENV =
 
 export const API_URL = config[ENV].API_URL;
 ```
+
+## Api Integration
+In order to provide dynamic data for the web app, the app typically connects to an API. The API methods should be placed in a separate file and imported into the component file
+
+### /src/js/lib/httpWrapper.ts
+This file 
 
 ## Set up Default App Structure Using TS + JSX
 At this point, the basic configuration is set up using ESLint, Prettier, typed CSS module support and JSX. We can now proceed to gut the demo app and place in our skeleton app using JSX.

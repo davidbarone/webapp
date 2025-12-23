@@ -69,6 +69,12 @@
           "${workspaceFolder:api}/webapp-api.csproj"
         ],
         "cwd": "${workspaceFolder:api}/bin/debug/net8.0",
+        "stopAtEntry": false,
+        "serverReadyAction": {
+          "action": "openExternally",
+          "pattern": "\\bNow listening on:\\s+(https?://\\S+)",
+          "uriFormat": "%s/swagger"
+        },
         "env": {
           "ASPNETCORE_ENVIRONMENT": "Development"
         }
