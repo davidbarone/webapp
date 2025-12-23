@@ -26,6 +26,31 @@
           "${workspaceFolder:api}/webapp-api.csproj"
         ],
         "problemMatcher": "$msCompile"
+      },
+      {
+        "label": "build-ui",
+        "type": "shell",
+        "command": "npm run dev",
+        "options": {
+          "cwd": "${workspaceFolder:ui}/src"
+        },
+        "isBackground": true,
+        "problemMatcher": {
+          "owner": "custom",
+          "pattern": [
+            {
+              "regexp": ".",
+              "file": 1,
+              "location": 2,
+              "message": 3
+            }
+          ],
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": ".*",
+            "endsPattern": "ready|compiled|running at|Local:"
+          }
+        }
       }
     ]
   },
@@ -33,7 +58,7 @@
     "version": "0.2.0",
     "configurations": [
       {
-        "name": "Backend (.NET Web API)",
+        "name": "Launch API",
         "type": "coreclr",
         "request": "launch",
         "preLaunchTask": "build-api",
@@ -49,18 +74,21 @@
         }
       },
       {
-        "name": "Frontend (SPA)",
+        "name": "Launch UI",
+        "preLaunchTask": "build-ui",
+        "type": "chrome",
         "request": "launch",
-        "cwd": "${workspaceFolder:ui}",
-        "runtimeExecutable": "npm",
-        "runtimeArgs": ["run", "dev"],
-        "console": "integratedTerminal"
+        "url": "http://localhost:3000",
+        "webRoot": "${workspaceFolder:ui}/src",
       }
     ],
     "compounds": [
       {
-        "name": "Launch API + SPA",
-        "configurations": ["Backend (.NET Web API)", "Frontend (SPA)"]
+        "name": "Launch API + UI",
+        "configurations": [
+          "Launch API",
+          "Launch UI"
+        ]
       }
     ]
   }

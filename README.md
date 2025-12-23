@@ -66,6 +66,7 @@ Full stack web/api reference application (2025 edition).
     - [Coding Standards](#coding-standards)
   - [Testing](#testing)
 - [Full Debug using Visual Studio Code](#full-debug-using-visual-studio-code)
+  - [/webapp.code-workspace](#webappcode-workspace)
 - [Screenshots](#screenshots)
   - [Viewing all posts:](#viewing-all-posts)
   - [View / edit individual post](#view--edit-individual-post)
@@ -2188,7 +2189,115 @@ The API (server) and web app (client) can both be run independently:
 - API: `dotnet run` will launch the application from source code
 - UI: `npm run dev` will start the development server, serving the web app to a browser
 
-Instead of running each layer separately, both launches can be combined in a `launch.json` file configured at the workspace level
+Instead of running each layer separately, both launches can be combined using Visual code workspace configuration:
+1. Create a new workspace at the root of this project
+2. Add root folders for api and ui projects
+3. Add a `webapp.code-workspace` file. This contains sections for:
+   1. tasks (includes the api build task)
+   2. launch.configurations (includes 2 launch configurations - one for api and one for ui)
+   3. launch.compounds (includes a compound configuration to run both projects)
+
+To run the `build-api` task open the command palette and type `Tasks:Run Task` and select the `build-api` task.
+To run the api + ui projects, just click the F5 run button and select `Launch API + UI`.
+
+## /webapp.code-workspace
+``` json
+{
+  "folders": [
+    {
+      "name": "root",
+      "path": "."
+    },
+    {
+      "name": "api",
+      "path": "src/webapp-api"
+    },
+    {
+      "name": "ui",
+      "path": "src/webapp-ui"
+    }
+  ],
+  "settings": {},
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "build-api",
+        "command": "dotnet",
+        "type": "process",
+        "args": [
+          "build",
+          "${workspaceFolder:api}/webapp-api.csproj"
+        ],
+        "problemMatcher": "$msCompile"
+      },
+      {
+        "label": "build-ui",
+        "type": "shell",
+        "command": "npm run dev",
+        "options": {
+          "cwd": "${workspaceFolder:ui}/src"
+        },
+        "isBackground": true,
+        "problemMatcher": {
+          "owner": "custom",
+          "pattern": [
+            {
+              "regexp": ".",
+              "file": 1,
+              "location": 2,
+              "message": 3
+            }
+          ],
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": ".*",
+            "endsPattern": "ready|compiled|running at|Local:"
+          }
+        }
+      }
+    ]
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Launch API",
+        "type": "coreclr",
+        "request": "launch",
+        "preLaunchTask": "build-api",
+        "program": "dotnet",
+        "args": [
+          "run",
+          "--project",
+          "${workspaceFolder:api}/webapp-api.csproj"
+        ],
+        "cwd": "${workspaceFolder:api}/bin/debug/net8.0",
+        "env": {
+          "ASPNETCORE_ENVIRONMENT": "Development"
+        }
+      },
+      {
+        "name": "Launch UI",
+        "preLaunchTask": "build-ui",
+        "type": "chrome",
+        "request": "launch",
+        "url": "http://localhost:3000",
+        "webRoot": "${workspaceFolder:ui}/src",
+      }
+    ],
+    "compounds": [
+      {
+        "name": "Launch API + UI",
+        "configurations": [
+          "Launch API",
+          "Launch UI"
+        ]
+      }
+    ]
+  }
+}
+```
 
 # Screenshots
 TO DO
