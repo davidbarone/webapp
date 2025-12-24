@@ -31,7 +31,9 @@ Full stack web/api reference application (2025 edition).
     - [/Endpoints/PostEndpoints.cs](#endpointspostendpointscs)
     - [/Endpoints/CommentEndpoints.cs](#endpointscommentendpointscs)
   - [Configuration of Program.cs](#configuration-of-programcs)
-    - [/Program.cs](#programcs)
+    - [CORS](#cors)
+      - [/Program.cs](#programcs)
+    - [/Program.cs](#programcs-1)
 - [webapp-ui](#webapp-ui)
   - [Vite Configuration](#vite-configuration)
     - [/vite.config.js](#viteconfigjs)
@@ -628,7 +630,37 @@ public static class CommentEndpoints
 ## Configuration of Program.cs
 The following additional configuration is required in the `Program.cs` file:
 
+### CORS
+In order to allow for cross object resource sharing (CORS), the following was added into `program.cs`
+
+#### /Program.cs
+``` cs
+// CORS service - add before builder.build() line
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin", policy =>
+    {
+        // dev
+        policy.WithOrigins("http://localhost:3000") // Replace with your website's URL
+              .AllowAnyMethod() // Allow all HTTP methods
+              .AllowAnyHeader(); // Allow all headers
+
+        // prod
+        policy.WithOrigins("https://example.com") // Replace with your website's URL
+              .AllowAnyMethod() // Allow all HTTP methods
+              .AllowAnyHeader(); // Allow all headers
+    });
+});
+
+...
+...
+
+// Use the CORS policy - add before app.run() line
+app.UseCors("AllowSpecificOrigin");
+```
+
 ### /Program.cs
+Additional configuration is shown below:
 ``` cs
 // <Add the following line in the sections that builds services>
 builder.Services.AddScoped<IDataStore, JsonDataStore>();
