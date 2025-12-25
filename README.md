@@ -803,11 +803,13 @@ dist
 
 ### /package.json
 The following scripts were added to automate linting and formatting:
-```
+``` json
 "scripts": {
     "lint": "eslint . --ext .js,.ts",
     "lint-fix": "eslint . --ext .js,.ts --fix",
-    "format": "prettier --write ."}
+    "prettier": "prettier --config .prettierrc.json 'src/**/*.{ts,tsx,js}'",
+    "prettier-fix": "prettier --config .prettierrc.json 'src/**/*.{ts,tsx,js}' --write"
+}
 ```
 
 ### VSCode settings (settings.json)

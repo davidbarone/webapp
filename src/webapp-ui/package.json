@@ -10,7 +10,9 @@
     "lint": "eslint . --ext .js,.ts",
     "lint-fix": "eslint . --ext .js,.ts --fix",
     "format": "prettier --write .",
-    "css-types": "tcm src --watch"
+    "css-types": "tcm src --watch",
+    "prettier": "prettier --config .prettierrc.json 'src/**/*.{ts,tsx,js}'",
+    "prettier-fix": "prettier --config .prettierrc.json 'src/**/*.{ts,tsx,js}' --write"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^8.49.0",
