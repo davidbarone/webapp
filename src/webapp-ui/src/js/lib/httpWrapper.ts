@@ -7,8 +7,7 @@ interface HttpWrapperType {
 }
 
 interface HttpWrapperConstructor {
-  // prettier-ignore
-  new(apiUrl: string): HttpWrapperType;
+  new (apiUrl: string): HttpWrapperType;
 }
 
 const HttpWrapper: HttpWrapperConstructor = function (
