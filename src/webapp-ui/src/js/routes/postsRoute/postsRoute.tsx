@@ -2,6 +2,7 @@ import { reactiveValue } from '@root/js/lib/reactive';
 import { getPosts } from './postsHttp';
 import { Button } from '@root/js/widgets/button/button';
 import { Input } from '@root/js/widgets/input/input';
+import { TableWidget } from '@root/js/widgets/table/table';
 
 export default function PostsRoute() {
   // Render JSX
@@ -22,9 +23,15 @@ export default function PostsRoute() {
           label: 'Click Me',
           click: () => alert('clicked!'),
         })}
-        {posts.map((p) => (
-          <div>{p.teaser}</div>
-        ))}
+
+        {TableWidget({
+          visible: true,
+          data: posts,
+          mapping: {
+            Id: (row) => <>{row.id}</>,
+            Teaser: (row) => <>{row.teaser}</>,
+          },
+        })}
       </>
     );
     document.getElementById('posts')!.appendChild(tableContent);

@@ -912,6 +912,9 @@ Then add following to scripts to automatically watch for changes:
 
 When you run `npm run css-types`, this will scan your source for any scoped css module files (These must be have file name ending in .module.css) and create TypeScript type files. You can then import the css file into your components, and TypeScript will provide auto-complete for style class selector names.
 
+Notes:
+- When referencing classes, use `class={styles.nameofclass}` syntax instead of `className={styles.nameofclass}` This is because we're using the dom class attribute directly instead of React's virtual dom.
+
 ## JSX Support
 When building html content, using html strings everywhere is error-prone. JSX is a domain-specific language that enables developer to write HTML elements directly within their JavaScript code. JSX is primarily used in React, but TypeScript supports JSX too.
 
