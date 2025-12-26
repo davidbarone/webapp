@@ -7,6 +7,7 @@ Full stack web/api reference application (2025 edition).
   - [Node](#node)
   - [.NET Core](#net-core)
   - [VSCode](#vscode)
+    - [Settings.json](#settingsjson)
 - [Project Structure](#project-structure)
 - [Data Model](#data-model)
   - [Post Entity](#post-entity)
@@ -132,6 +133,64 @@ VSCode is my editor of choice. In addition, the following extensions are added:
 - Markdown All in One: yzhang.markdown-all-in-one
 - Prettier: esbenp.prettier-vscode
 - REST Client: humao.rest-client
+
+### Settings.json
+The VSCode settings needs to be updated to work seamlessly with Prettier:
+``` json
+{
+  "prettier.configPath": ".prettierrc.json",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "eslint.enable": true,
+
+  // Set the VSCode prettier extension to use single quotes
+  // so doesn't conflict with the prettier script / npm package.
+  "prettier.singleQuote": true,
+  "prettier.jsxSingleQuote": true,
+
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "omnisharp.useEditorFormattingSettings": false,
+  "[markdown]": {
+    "editor.defaultFormatter": "yzhang.markdown-all-in-one"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "csharp.experimental.debug.hotReload": true,
+  "editor.formatOnType": true,
+  "[csharp]": {
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "ms-dotnettools.csharp",
+    "editor.formatOnType": true
+  },
+  "omnisharp.loggingLevel": "debug",
+  "workbench.editor.enablePreview": false,
+  "workbench.colorTheme": "Visual Studio 2019 Dark",
+
+  "editor.tabSize": 2,
+  "editor.stickyTabStops": true,
+  "workbench.editor.empty.hint": "hidden"
+}
+```
 
 # Project Structure
 Before starting, the overall project structure needs to be defined. I've ended up going with the following structure:

@@ -2,7 +2,7 @@ import { reactiveValue } from '@root/js/lib/reactive';
 import styles from './input.module.css';
 
 interface InputPropsType {
-  name?: string;
+  name: string;
   type:
     | 'input'
     | 'checkbox'
@@ -54,22 +54,22 @@ const Input = (props: InputPropsType) => {
       return (
         <textarea
           rows={props.rows}
-          disabled={props.disabled}
           className={props.disabled ? styles.readonly : styles.writeable}
           name={props.name}
           value={props.value.get()}
           onInput={onInput}
+          {...(props.disabled ? { disabled: true } : {})}
         />
       );
     } else {
       return (
         <input
-          disabled={props.disabled}
           className={props.disabled ? styles.readonly : styles.writeable}
           type={props.type}
           name={props.name}
           value={props.value.get()}
           onInput={onInput}
+          {...(props.disabled ? { disabled: true } : {})}
         />
       );
     }
