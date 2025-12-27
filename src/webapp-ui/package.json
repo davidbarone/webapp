@@ -11,6 +11,7 @@
     "lint-fix": "eslint . --ext .js,.ts --fix",
     "format": "prettier --write .",
     "css-types": "tcm src --watch",
+    "css-types-fix": "tcm src && eslint . --ext .js,.ts --fix",
     "prettier": "prettier --config .prettierrc.json 'src/**/*.{ts,tsx,js}'",
     "prettier-fix": "prettier --config .prettierrc.json 'src/**/*.{ts,tsx,js}' --write"
   },

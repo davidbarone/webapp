@@ -1,10 +1,11 @@
 import logo from '@root/assets/logo.png';
 import { type RouteRuleArray, router } from '@root/js/lib/router.tsx';
+import styles from '@root/js/widgets/main/main.module.css';
 
 export default function Main(routes: RouteRuleArray) {
   router(routes, 'route');
   return (
-    <main>
+    <main class={styles.main}>
       <div class="title">
         <div class="container-fixed">
           <div class="col s100 m75">dbarone.com</div>
@@ -13,7 +14,7 @@ export default function Main(routes: RouteRuleArray) {
           </div>
         </div>
       </div>
-      <div class="route" id="route"></div>
+      <div class="route container-fixed" id="route"></div>
     </main>
   );
 }

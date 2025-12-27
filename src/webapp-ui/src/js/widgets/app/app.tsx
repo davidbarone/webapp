@@ -1,6 +1,6 @@
 import '@root/css/style.css';
-import './lib/createElement.js';
-import './lib/createFragment.js';
+import '../../lib/createElement.js';
+import '../../lib/createFragment.js';
 import Header from '@root/js/widgets/header/header.tsx';
 import Footer from '@root/js/widgets/footer/footer.tsx';
 import Main from '@root/js/widgets/main/main.tsx';
@@ -8,6 +8,7 @@ import HomeRoute from '@root/js/routes/homeRoute';
 import ReactiveRoute from '@root/js/routes/reactiveRoute';
 import PostsRoute from '@root/js/routes/postsRoute/postsRoute.js';
 import { type RouteRuleArray } from '@root/js/lib/router';
+import styles from '@root/js/widgets/app/app.module.css';
 
 // Set up routing
 const routes: RouteRuleArray = [
@@ -17,7 +18,7 @@ const routes: RouteRuleArray = [
 ];
 
 const x = (
-  <div class="app">
+  <div class={styles.app}>
     {Header(routes)}
     {Main(routes)}
     {Footer()}

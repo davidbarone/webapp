@@ -1,0 +1,6 @@
+.main {
+  /* main after header starts 40px down */
+  margin-top: 40px;
+  padding-top: 0.1px; /* to stop collapsing margins */
+  flex: 1 1;
+}

@@ -1,10 +1,11 @@
 .footer {
-  background: var(--color6);
-  color: var(--color4);
-  min-height: 40px;
-  line-height: 40px;
+  background: rgb(61, 79, 93);
+  /*background: var(--color1); */
+  color: var(--color5);
+  min-height: 30px;
+  line-height: 30px;
   width: 100%;
-  font-size: xx-small;
+  font-size: x-small;
   text-align: center;
-  border-top: 1px solid var(--color7);
+  z-index: 999;
 }
