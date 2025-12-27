@@ -186,8 +186,10 @@ button,
 input[type='submit'],
 input[type='reset'],
 input[type='button'] {
-  display: inline-block;
-  height: 30px;
+  display: inline-block; /* Ensure both behave similarly */
+  vertical-align: middle; /* Align to middle of line box */
+  line-height: 1.5;
+  margin-right: 4px;
   padding: 0 20px;
   color: #555;
   text-align: center;
@@ -221,9 +223,6 @@ button:focus,
 input[type='submit']:focus,
 input[type='reset']:focus,
 input[type='button']:focus {
-  color: #333;
-  background-color: #ccc;
-  border-color: #888;
   outline: 0;
   transform: translateY(-0px);
   box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
@@ -477,21 +476,16 @@ code {
   padding: 0.2em 0.5em;
   margin: 0 0.2em;
   font-size: 90%;
-  white-space: nowrap;
-  background: #f1f1f1;
+  white-space: pre-line;
+  background: #f5f5dc;
   border: 1px solid #e1e1e1;
   border-radius: 4px;
-  font-family: 'Courier New', monospace;
-}
-
-pre {
-  font-family: sans-serif, 'Helvetica Neue', Helvetica, Arial;
+  border-left: 4px solid;
 }
 
 pre > code {
   display: block;
   padding: 1em 1.5em;
-  white-space: pre;
 }
 
 /* ---------------------------------------------

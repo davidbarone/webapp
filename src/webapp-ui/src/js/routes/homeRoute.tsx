@@ -84,7 +84,6 @@ export default function HomeRoute() {
         <input class="primary" type="button" value="button input" />
       </p>
       <hr />
-      <hr />
       <h1>Lists</h1>
       <ul>
         <li>Item 1</li>
@@ -101,11 +100,17 @@ export default function HomeRoute() {
       <pre>
         <code>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          <br />
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          <br />
           minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          <br />
           aliquip ex ea commodo consequat. Duis aute irure dolor in
+          <br />
           reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          <br />
           pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+          <br />
           culpa qui officia deserunt mollit anim id est laborum.
         </code>
       </pre>
