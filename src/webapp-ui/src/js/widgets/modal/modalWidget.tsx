@@ -2,9 +2,9 @@ import { reactiveValue } from '@root/js/lib/reactive';
 import styles from '@root/js/widgets/modal/modalWidget.module.css';
 
 interface ModalPropsType {
-  initialVisibility: boolean;
+  visibility: reactiveValue;
   onClose?: () => void;
-  children?: HTMLElement;
+  children?: reactiveValue; // HTMLElement;
 }
 
 /**
@@ -17,12 +17,11 @@ function createRef(initialValue: HTMLElement | null = null) {
 }
 
 export const ModalWidget = (props: ModalPropsType) => {
-  const visibility = new reactiveValue(props.initialVisibility);
   const modalContentRef = createRef();
   const modalContainerRef = createRef();
 
   const hideModal = () => {
-    visibility.set(false);
+    props.visibility.set(false);
     if (props.onClose) {
       props.onClose();
     }
@@ -31,7 +30,7 @@ export const ModalWidget = (props: ModalPropsType) => {
   modalContentRef.current = (
     <div class={styles.myModalContent}>
       <div class={styles.container}>
-        {props.children}
+        {props.children?.get()}
         <button
           class={styles.closeButton}
           onClick={() => {
@@ -49,7 +48,7 @@ export const ModalWidget = (props: ModalPropsType) => {
   );
 
   const toggleVisibility = () => {
-    if (visibility.get()) {
+    if (props.visibility.get()) {
       if (modalContentRef.current) {
         modalContentRef.current.classList.add(styles.slideIn);
         modalContentRef.current.classList.remove(styles.slideOut);
@@ -72,7 +71,34 @@ export const ModalWidget = (props: ModalPropsType) => {
     }
   };
 
-  visibility.subscribe(toggleVisibility);
+  const updateContent = () => {
+    console.log('updatecontent');
+    modalContentRef.current = (
+      <div class={styles.myModalContent}>
+        <div class={styles.container}>
+          {props.children?.get()}
+          <button
+            class={styles.closeButton}
+            onClick={() => {
+              hideModal();
+            }}
+          >
+            X
+          </button>
+        </div>
+      </div>
+    );
+
+    (modalContainerRef.current as HTMLElement).innerHTML = '';
+    (modalContainerRef.current as HTMLElement).appendChild(
+      modalContentRef.current as HTMLElement
+    );
+    toggleVisibility();
+  };
+
+  props.visibility.subscribe(toggleVisibility);
+  props.children?.subscribe(updateContent);
+
   toggleVisibility();
   return modalContainerRef.current;
 };

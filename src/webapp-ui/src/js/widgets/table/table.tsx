@@ -1,4 +1,5 @@
 import styles from '@root/js/widgets/table/table.module.css';
+import { FormWidget } from '@root/js/widgets/form/formWidget';
 
 /**
  * Defines a mapping dictionary. Each element consist of:
@@ -24,6 +25,9 @@ export function TableWidget<DataType extends { id: number }>(
   props: TablePropsType<DataType>
 ) {
   console.log(styles);
+
+  //  const displayForm = (r) => {};
+
   return (
     <div style={{ display: props.visible ? 'block' : 'none' }}>
       <table class={styles.TableWidget}>
@@ -32,6 +36,7 @@ export function TableWidget<DataType extends { id: number }>(
             {Object.keys(props.mapping).map((k, i) => (
               <th key={i}>{k}</th>
             ))}
+            <th>Edit</th>
           </tr>
         </thead>
         <tbody>
@@ -40,6 +45,31 @@ export function TableWidget<DataType extends { id: number }>(
               {Object.keys(props.mapping).map((k, i) => (
                 <td key={i}>{props.mapping[k](row as DataType)}</td>
               ))}
+              <td>
+                {FormWidget({
+                  data: row,
+                  fields: {
+                    slug: {
+                      name: 'slug',
+                      label: 'slug',
+                      type: 'text',
+                      value: (r) => r['slug'],
+                    },
+                    teaser: {
+                      name: 'teaser',
+                      label: 'teaser',
+                      type: 'text',
+                      value: (r) => r['teaser'],
+                    },
+                    content: {
+                      name: 'content',
+                      label: 'content',
+                      type: 'text',
+                      value: (r) => r['content'],
+                    },
+                  },
+                })}
+              </td>
             </tr>
           ))}
         </tbody>

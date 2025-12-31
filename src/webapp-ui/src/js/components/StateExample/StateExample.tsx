@@ -31,7 +31,7 @@ class StateExample extends Component {
 
   render(): any {
     return (
-      <div>
+      <>
         <h1>This is a StateExample Component</h1>
         <div>
           <div>a: {`${this.a.get()}`} </div>
@@ -41,7 +41,7 @@ class StateExample extends Component {
           </button>
           <div>sum(a + b): {`${this.sum.get()}`} </div>
         </div>
-      </div>
+      </>
     );
   }
 }

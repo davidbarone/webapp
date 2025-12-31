@@ -6,6 +6,20 @@ import { TableWidget } from '@root/js/widgets/table/table';
 import { ModalWidget } from '@root/js/widgets/modal/modalWidget';
 
 export default function PostsRoute() {
+  const modalVisibility = new reactiveValue(true);
+
+  const newContent = <div>test</div>;
+  const modalContent = new reactiveValue(
+    Input({
+      name: 'Name',
+      type: 'text',
+      label: 'label',
+      rows: 4,
+      disabled: false,
+      value: new reactiveValue(0),
+    })
+  );
+
   // Render JSX
   (async () => {
     const posts = await getPosts();
@@ -13,7 +27,10 @@ export default function PostsRoute() {
       <>
         {Button({
           label: 'Click Me',
-          click: () => alert('clicked!'),
+          click: () => {
+            modalVisibility.set(true);
+            modalContent.set(newContent);
+          },
         })}
 
         {TableWidget({
@@ -26,15 +43,8 @@ export default function PostsRoute() {
         })}
 
         {ModalWidget({
-          initialVisibility: true,
-          children: Input({
-            name: 'Name',
-            type: 'text',
-            label: 'label',
-            rows: 4,
-            disabled: false,
-            value: new reactiveValue(0),
-          }),
+          visibility: modalVisibility,
+          children: modalContent,
         })}
       </>
     );

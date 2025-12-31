@@ -1,0 +1,56 @@
+import { reactiveValue } from '@root/js/lib/reactive';
+import { Input } from '@root/js/widgets/input/input';
+
+type FormField<T> = {
+  name: string;
+  type:
+    | 'input'
+    | 'checkbox'
+    | 'button'
+    | 'color'
+    | 'date'
+    | 'datetime-local'
+    | 'email'
+    | 'file'
+    | 'hidden'
+    | 'image'
+    | 'month'
+    | 'number'
+    | 'password'
+    | 'radio'
+    | 'range'
+    | 'reset'
+    | 'search'
+    | 'submit'
+    | 'tel'
+    | 'text'
+    | 'time'
+    | 'url'
+    | 'week';
+  label?: string;
+  disabled?: boolean;
+  rows?: number;
+  onInputHook?: any;
+  value: (row: T) => number | string | Date | boolean;
+};
+
+type FormFieldDictionary<T> = {
+  [key: string]: FormField<T>;
+};
+
+type FormPropsType<T> = {
+  data: T;
+  fields: FormFieldDictionary<T>;
+};
+
+export function FormWidget<DataType>(props: FormPropsType<DataType>) {
+  const keys = Object.keys(props.fields);
+  keys.map((k) => {
+    Input({
+      name: props.fields[k].name,
+      label: props.fields[k].label,
+      type: props.fields[k].type,
+      value: new reactiveValue(props.data[k]),
+    });
+  });
+}
