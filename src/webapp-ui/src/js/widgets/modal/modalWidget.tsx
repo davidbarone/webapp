@@ -4,7 +4,7 @@ import styles from '@root/js/widgets/modal/modalWidget.module.css';
 interface ModalPropsType {
   visibility: ReactiveValueType<boolean>;
   onClose?: () => void;
-  children?: ReactiveValueType<HTMLElement>;
+  content?: ReactiveValueType<HTMLElement>;
 }
 
 /**
@@ -30,7 +30,7 @@ export const ModalWidget = (props: ModalPropsType) => {
   modalContentRef.current = (
     <div class={styles.myModalContent}>
       <div class={styles.container}>
-        {props.children?.get()}
+        {props.content?.get()}
         <button
           class={styles.closeButton}
           onClick={() => {
@@ -47,7 +47,7 @@ export const ModalWidget = (props: ModalPropsType) => {
     <div class={styles.myModal}>{modalContentRef.current}</div>
   );
 
-  const toggleVisibility = () => {
+  const toggleVisibility = (): void => {
     if (props.visibility.get()) {
       if (modalContentRef.current) {
         modalContentRef.current.classList.add(styles.slideIn);
@@ -76,7 +76,7 @@ export const ModalWidget = (props: ModalPropsType) => {
     modalContentRef.current = (
       <div class={styles.myModalContent}>
         <div class={styles.container}>
-          {props.children?.get()}
+          {props.content?.get()}
           <button
             class={styles.closeButton}
             onClick={() => {
@@ -97,7 +97,7 @@ export const ModalWidget = (props: ModalPropsType) => {
   };
 
   props.visibility.subscribe(toggleVisibility);
-  props.children?.subscribe(updateContent);
+  props.content?.subscribe(updateContent);
 
   toggleVisibility();
   return modalContainerRef.current;

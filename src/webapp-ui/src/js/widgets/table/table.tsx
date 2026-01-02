@@ -1,5 +1,9 @@
 import styles from '@root/js/widgets/table/table.module.css';
 import { FormWidget } from '@root/js/widgets/form/formWidget';
+import { ModalWidget } from '@root/js/widgets/modal/modalWidget';
+import { reactiveValue } from '@root/js/lib/reactive';
+import { Button } from '@root/js/widgets/button/button';
+import { type FormFieldType } from '@root/js/widgets/form/formWidget';
 
 /**
  * Defines a mapping dictionary. Each element consist of:
@@ -13,7 +17,8 @@ interface MappingDictionary<T> {
 type TablePropsType<T> = {
   data: Array<T>;
   visible: boolean;
-  mapping: MappingDictionary<T>;
+  listMapping: MappingDictionary<T>;
+  editMapping: { [Key: string]: FormFieldType<T> };
 };
 
 /**
@@ -23,17 +28,34 @@ type TablePropsType<T> = {
  */
 export function TableWidget<DataType extends { id: number }>(
   props: TablePropsType<DataType>
-) {
+): HTMLDivElement {
   console.log(styles);
 
-  //  const displayForm = (r) => {};
+  const modalVisibility = reactiveValue<boolean>(false);
+  const modalContent = reactiveValue<HTMLElement>(<></>);
+
+  const editRow = (data: DataType): void => {
+    console.log(props.editMapping);
+    modalContent.set(
+      FormWidget<DataType>({
+        data: data,
+        fields: props.editMapping,
+      })
+    );
+    modalVisibility.set(true);
+  };
 
   return (
     <div style={{ display: props.visible ? 'block' : 'none' }}>
+      {ModalWidget({
+        visibility: modalVisibility,
+        content: modalContent,
+      })}
+
       <table class={styles.TableWidget}>
         <thead>
           <tr>
-            {Object.keys(props.mapping).map((k, i) => (
+            {Object.keys(props.listMapping).map((k, i) => (
               <th key={i}>{k}</th>
             ))}
             <th>Edit</th>
@@ -42,31 +64,15 @@ export function TableWidget<DataType extends { id: number }>(
         <tbody>
           {props.data.map((row) => (
             <tr key={row.id}>
-              {Object.keys(props.mapping).map((k, i) => (
-                <td key={i}>{props.mapping[k](row as DataType)}</td>
+              {Object.keys(props.listMapping).map((k, i) => (
+                <td key={i}>{props.listMapping[k](row as DataType)}</td>
               ))}
               <td>
-                {FormWidget({
-                  data: row,
-                  fields: {
-                    slug: {
-                      name: 'slug',
-                      label: 'slug',
-                      type: 'text',
-                      value: (r) => r['slug'],
-                    },
-                    teaser: {
-                      name: 'teaser',
-                      label: 'teaser',
-                      type: 'text',
-                      value: (r) => r['teaser'],
-                    },
-                    content: {
-                      name: 'content',
-                      label: 'content',
-                      type: 'text',
-                      value: (r) => r['content'],
-                    },
+                {/* Add edit button */}
+                {Button({
+                  label: 'Edit',
+                  click: () => {
+                    editRow(row);
                   },
                 })}
               </td>

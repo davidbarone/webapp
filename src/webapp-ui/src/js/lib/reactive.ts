@@ -1,18 +1,18 @@
 export type ReactiveValueType<T> = {
   get: () => T;
-  set: (T) => void;
-  subscribe: (T?) => void;
+  set: (value: T) => void;
+  subscribe: (subscriber: (value?: T) => void) => void;
 };
 
 export type ReactiveExpressionType<T> = {
   get: () => T;
-  subscribe: (T?) => void;
+  subscribe: (subscriber: (value?: T) => void) => void;
 };
 
 //https://dev.to/arnavk-09/simplest-reactivity-in-web-pages-using-vanilla-javascript-5ekp
 export function reactiveValue<T>(initialValue): ReactiveValueType<T> {
   let value = initialValue;
-  const subscribers: Array<() => void> = [];
+  const subscribers: Array<(subscriber?: T) => void> = [];
 
   const get = function get<T>(): T {
     return value as T;

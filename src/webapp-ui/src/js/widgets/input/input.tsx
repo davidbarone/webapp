@@ -1,6 +1,5 @@
-import { reactiveValue } from '@root/js/lib/reactive';
 import styles from './input.module.css';
-
+import { type ReactiveValueType } from '@root/js/lib/reactive';
 interface InputPropsType {
   name: string;
   type:
@@ -31,10 +30,10 @@ interface InputPropsType {
   disabled?: boolean;
   rows?: number;
   onInputHook?: any;
-  value: reactiveValue;
+  value: ReactiveValueType<string | number>;
 }
 
-const Input = (props: InputPropsType) => {
+const Input = (props: InputPropsType): HTMLDivElement => {
   const onInput = (e: any) => {
     const val =
       e.target.type === 'checkbox' ? e.target.checked : e.target.value;
@@ -46,7 +45,7 @@ const Input = (props: InputPropsType) => {
     }
   };
 
-  const input = () => {
+  const input = (): HTMLElement => {
     if (props.type === 'text' && props.rows && props.rows > 0) {
       {
         /* Textarea */

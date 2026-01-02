@@ -1,7 +1,7 @@
 import { reactiveValue } from '@root/js/lib/reactive';
 import { Input } from '@root/js/widgets/input/input';
 
-type FormField<T> = {
+export type FormFieldType<T> = {
   name: string;
   type:
     | 'input'
@@ -35,7 +35,7 @@ type FormField<T> = {
 };
 
 type FormFieldDictionary<T> = {
-  [key: string]: FormField<T>;
+  [key: string]: FormFieldType<T>;
 };
 
 type FormPropsType<T> = {
@@ -43,14 +43,20 @@ type FormPropsType<T> = {
   fields: FormFieldDictionary<T>;
 };
 
-export function FormWidget<DataType>(props: FormPropsType<DataType>) {
+export function FormWidget<DataType>(
+  props: FormPropsType<DataType>
+): HTMLFormElement {
   const keys = Object.keys(props.fields);
-  keys.map((k) => {
+  const inputs = keys.map((k) =>
     Input({
       name: props.fields[k].name,
       label: props.fields[k].label,
       type: props.fields[k].type,
-      value: new reactiveValue(props.data[k]),
-    });
-  });
+      rows: props.fields[k].rows,
+      value: reactiveValue(props.data[k]),
+    })
+  );
+
+  console.log(inputs);
+  return <form>{inputs}</form>;
 }

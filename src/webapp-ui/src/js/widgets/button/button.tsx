@@ -8,7 +8,7 @@ interface ButtonPropsType {
   href?: string | undefined;
 }
 
-const Button = (props: ButtonPropsType) => {
+const Button = (props: ButtonPropsType): HTMLButtonElement => {
   const doClick = (e: MouseEvent): void => {
     if (props.href) {
       window.location.href = props.href;
