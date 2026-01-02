@@ -1,4 +1,9 @@
-import { reactiveValue, reactiveExpression } from '../lib/reactive';
+import {
+  type ReactiveValueType,
+  type ReactiveExpressionType,
+  reactiveValue,
+  reactiveExpression,
+} from '../lib/reactive';
 
 export class Component extends HTMLElement {
   #props: Array<string> = [];
@@ -27,7 +32,7 @@ export class Component extends HTMLElement {
     // if name does not exist, create a new reactiveValue
     // otherwise, set the value.
     if (!(name in this.#props)) {
-      this.#props[name] = new reactiveValue(null); // Assign a default value (e.g., null)
+      this.#props[name] = reactiveValue(null); // Assign a default value (e.g., null)
       this.#props[name].subscribe(this.renderInternal.bind(this));
     }
     this.#props[name].set(value);
@@ -54,14 +59,14 @@ export class Component extends HTMLElement {
     return null;
   }
 
-  getReactiveValue(value): reactiveValue {
-    const r = new reactiveValue(value);
+  getReactiveValue<T>(value: T): ReactiveValueType<T> {
+    const r = reactiveValue<T>(value);
     r.subscribe(this.renderInternal.bind(this));
     return r;
   }
 
-  getReactiveExpression(fn, ...values): reactiveExpression {
-    const r = new reactiveExpression(fn, ...values);
+  getReactiveExpression<T>(fn, ...values): ReactiveExpressionType<T> {
+    const r = reactiveExpression<T>(fn, ...values);
     r.subscribe(this.renderInternal.bind(this));
     return r;
   }

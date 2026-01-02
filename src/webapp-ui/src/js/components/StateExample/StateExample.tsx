@@ -1,13 +1,17 @@
 import { Component } from '@root/js/lib/component';
+import type {
+  ReactiveValueType,
+  ReactiveExpressionType,
+} from '@root/js/lib/reactive';
 
 class StateExample extends Component {
   constructor() {
     super();
   }
 
-  a;
-  b;
-  sum;
+  a: ReactiveValueType<number> = this.getReactiveValue(0);
+  b: ReactiveValueType<number> = this.getReactiveValue(0);
+  sum: ReactiveExpressionType<number> = this.getReactiveValue(0);
 
   onLoad = () => {
     this.a = this.getReactiveValue(parseInt(this.getAttribute('a') ?? '0'));

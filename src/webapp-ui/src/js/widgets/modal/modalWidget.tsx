@@ -1,10 +1,10 @@
-import { reactiveValue } from '@root/js/lib/reactive';
+import { type ReactiveValueType } from '@root/js/lib/reactive';
 import styles from '@root/js/widgets/modal/modalWidget.module.css';
 
 interface ModalPropsType {
-  visibility: reactiveValue;
+  visibility: ReactiveValueType<boolean>;
   onClose?: () => void;
-  children?: reactiveValue; // HTMLElement;
+  children?: ReactiveValueType<HTMLElement>;
 }
 
 /**
