@@ -6,3 +6,8 @@ export async function getPosts(): Promise<PostType[]> {
   const wrapper = new HttpWrapper(API_URL);
   return await wrapper.apiGet('posts');
 }
+
+export async function deletePost(postId: number): Promise<void> {
+  const wrapper = new HttpWrapper(API_URL);
+  return await wrapper.apiDelete(`posts/${postId}`);
+}

@@ -53,7 +53,7 @@ const Input = (props: InputPropsType): HTMLDivElement => {
       return (
         <textarea
           rows={props.rows}
-          className={props.disabled ? styles.readonly : styles.writeable}
+          class={props.disabled ? styles.readonly : styles.writeable}
           name={props.name}
           value={props.value.get()}
           onInput={onInput}
@@ -63,7 +63,7 @@ const Input = (props: InputPropsType): HTMLDivElement => {
     } else {
       return (
         <input
-          className={props.disabled ? styles.readonly : styles.writeable}
+          class={props.disabled ? styles.readonly : styles.writeable}
           type={props.type}
           name={props.name}
           value={props.value.get()}
@@ -75,7 +75,7 @@ const Input = (props: InputPropsType): HTMLDivElement => {
   };
 
   return (
-    <div className={styles.field}>
+    <div class={styles.field}>
       <label>
         {props.label}
         {props.label ? ':' : ''}

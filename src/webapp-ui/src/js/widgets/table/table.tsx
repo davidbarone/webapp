@@ -19,6 +19,7 @@ type TablePropsType<T> = {
   visible: boolean;
   listMapping: MappingDictionary<T>;
   editMapping: { [Key: string]: FormFieldType<T> };
+  onDelete: (row: T) => void;
 };
 
 /**
@@ -73,6 +74,13 @@ export function TableWidget<DataType extends { id: number }>(
                   label: 'Edit',
                   click: () => {
                     editRow(row);
+                  },
+                })}
+                {/* Add delete button */}
+                {Button({
+                  label: 'Delete',
+                  click: () => {
+                    props.onDelete(row);
                   },
                 })}
               </td>

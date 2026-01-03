@@ -1,5 +1,6 @@
 import { type ReactiveValueType } from '@root/js/lib/reactive';
 import styles from '@root/js/widgets/modal/modalWidget.module.css';
+import { Button } from '../button/button';
 
 interface ModalPropsType {
   visibility: ReactiveValueType<boolean>;
@@ -85,6 +86,17 @@ export const ModalWidget = (props: ModalPropsType) => {
           >
             X
           </button>
+          <div>
+            {Button({
+              label: 'Save',
+              click: () => alert('hello'),
+            })}
+
+            {Button({
+              label: 'Cancel',
+              click: () => hideModal(),
+            })}
+          </div>
         </div>
       </div>
     );
