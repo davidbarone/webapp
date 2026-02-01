@@ -2,6 +2,7 @@
 Full stack web/api reference application (2025 edition).
 
 - [webapp](#webapp)
+- [To Open / Run webapp](#to-open--run-webapp)
 - [Key design decisions](#key-design-decisions)
 - [Tooling / Libraries / Frameworks](#tooling--libraries--frameworks)
   - [Node](#node)
@@ -82,6 +83,9 @@ Modern web development is complicated. There are a million ways to skin a cat, a
 This project began a couple of years ago and was based on a .NET API layer and a React SPA UI. Today, with the improvements of using vanilla js, and the advancement of standard browser APIs, I have decided to update this reference architecture to use vanilla js where possible.
 
 This reference application demonstrates a very basic blog site. The site allows blog posts to be created and edited / deleted. There is also the facility to add comments onto posts.
+
+# To Open / Run webapp
+Open `webapp.code-workspace` using VSCode. Click on the **Run** toolbar icon, and select & run `Launch API + UI (workspace)`. This will launch the API and the UI in development mode.
 
 # Key design decisions
 - Full stack design

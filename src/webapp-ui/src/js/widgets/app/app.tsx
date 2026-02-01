@@ -9,6 +9,7 @@ import ReactiveRoute from '@root/js/routes/reactiveRoute';
 import PostsRoute from '@root/js/routes/postsRoute/postsRoute.js';
 import { type RouteRuleArray } from '@root/js/lib/router';
 import styles from '@root/js/widgets/app/app.module.css';
+import { ToastWidget } from '../toastWidget/toastWidget.js';
 
 // Set up routing
 const routes: RouteRuleArray = [
@@ -19,6 +20,7 @@ const routes: RouteRuleArray = [
 
 const x = (
   <div class={styles.app}>
+    {ToastWidget()}
     {Header(routes)}
     {Main(routes)}
     {Footer()}

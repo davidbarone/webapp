@@ -11,3 +11,8 @@ export async function deletePost(postId: number): Promise<void> {
   const wrapper = new HttpWrapper(API_URL);
   return await wrapper.apiDelete(`posts/${postId}`);
 }
+
+export async function initPosts(): Promise<void> {
+  const wrapper = new HttpWrapper(API_URL);
+  return await wrapper.apiPost('init', {});
+}

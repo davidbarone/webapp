@@ -1,4 +1,5 @@
 declare const styles: {
-  readonly TableWidget: string;
+  readonly "TableWidget": string;
 };
 export = styles;
+
