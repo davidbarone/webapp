@@ -1,20 +1,25 @@
 # webapp
-Full stack web/api reference application (2025 edition).
+A full stack web/api reference application (2025/2026 edition).
 
 - [webapp](#webapp)
 - [To Open / Run webapp](#to-open--run-webapp)
 - [Key design decisions](#key-design-decisions)
+  - [Full Stack Architecture](#full-stack-architecture)
+  - [Data Layer](#data-layer)
+  - [API Layer](#api-layer)
+  - [UI Layer](#ui-layer)
+  - [Additional Design Decisions](#additional-design-decisions)
 - [Tooling / Libraries / Frameworks](#tooling--libraries--frameworks)
   - [Node](#node)
   - [.NET Core](#net-core)
   - [VSCode](#vscode)
     - [Settings.json](#settingsjson)
-- [Project Structure](#project-structure)
 - [Data Model](#data-model)
   - [Post Entity](#post-entity)
   - [Comment Entity](#comment-entity)
 - [webapp-api](#webapp-api)
   - [Initialisation](#initialisation)
+  - [Project Structure](#project-structure)
   - [Configuration](#configuration)
     - [/Configuration/Api.Settings.cs](#configurationapisettingscs)
     - [/Configuration/appsettings.Development.json](#configurationappsettingsdevelopmentjson)
@@ -37,6 +42,8 @@ Full stack web/api reference application (2025 edition).
       - [/Program.cs](#programcs)
     - [/Program.cs](#programcs-1)
 - [webapp-ui](#webapp-ui)
+  - [Project Structure](#project-structure-1)
+    - [A note on where to put files](#a-note-on-where-to-put-files)
   - [Vite Configuration](#vite-configuration)
     - [/vite.config.js](#viteconfigjs)
   - [Prettier and ESLint](#prettier-and-eslint)
@@ -57,6 +64,7 @@ Full stack web/api reference application (2025 edition).
   - [Reactivity and Components](#reactivity-and-components)
     - [/src/js/lib/reactive.js](#srcjslibreactivejs)
     - [/src/js/lib/component.tsx](#srcjslibcomponenttsx)
+    - [Widgets](#widgets)
   - [Environment Variables](#environment-variables)
     - [/src/js/lib/environment.js](#srcjslibenvironmentjs)
   - [Api Integration](#api-integration)
@@ -82,43 +90,48 @@ Modern web development is complicated. There are a million ways to skin a cat, a
 
 This project began a couple of years ago and was based on a .NET API layer and a React SPA UI. Today, with the improvements of using vanilla js, and the advancement of standard browser APIs, I have decided to update this reference architecture to use vanilla js where possible.
 
-This reference application demonstrates a very basic blog site. The site allows blog posts to be created and edited / deleted. There is also the facility to add comments onto posts.
+This reference application demonstrates a very basic blog site. The site allows blog posts to be created, edited and deleted. There is also the facility to add comments onto posts.
 
 # To Open / Run webapp
 Open `webapp.code-workspace` using VSCode. Click on the **Run** toolbar icon, and select & run `Launch API + UI (workspace)`. This will launch the API and the UI in development mode.
 
 # Key design decisions
-- Full stack design
-  - Web layer: Vanilla JS
-    - Using Vite server
-  - API layer: Minimal API using .NET / C#
-    - API data storage layer: lightweight json server (https://github.com/davidbarone/Dbarone.Net.JsonDataStore)
+I wrote this reference application with several design decisions in mind:
 
-The following additional design goals are also required:
+## Full Stack Architecture
+The application should comprise of:
+- Data / storage layer: Using Dbarone.Net.JsonDataStore - a simple Json data store
+- API layer: Using .NET minimal API pattern
+- UI layer: Vanilla Javascript
 
+## Data Layer
+Dbarone.Net.JsonDataStore is another of my projects. It's a simple Json data store that uses collections (which are like tables). This project is lightweight and good for small projects and prototypes like this. You can find out more here: https://github.com/davidbarone/Dbarone.Net.JsonDataStore.
+
+## API Layer
+The API layer uses the .NET minimal API pattern. This moves away from the traditional approach using controller classes. The minimal API pattern is ideal for smaller projects and prototypes.
+
+## UI Layer
+The UI layer is written in Vanilla JS where possible. I've decided to go with using the Vite server as this appears to be a new up and coming lightweight web server and build tool.
+
+## Additional Design Decisions
+I've made the additional design decisions for this project:
 - 100% API driven - server functionality should be in separate project (normally .NET Core web-api)
 - Web UI layer to be 100% javascript application
-- Use standard modern node build chain, but keep to core well-used 
-
-
+- Use standard modern node build chain, but keep to core well-used tools. I've tried to keep external dependencies down to a minimum.
 - Use of TypeScript where possible to get better type checking support over js.
-- Use of JSX (native support exists in TypeScript)
-- Use of component library
+- Use of JSX instead of writing HTML in strings. TypeScript offers native support of JSX.
+- Using components / widgets when writing the UI. All modern web development uses some form of components, or uses a component library like React or Vue.
 - Data Binding using native js tooling
-- CSS Modules
-- Testing
-  - xunit for server
+- CSS Modules - when building a web site using components, you want to make sure that you can style components individually, and not have that styling bleed outside that component. CSS Modules does this for you.
+- Testing - the API and UI layers should both have unit tests.
+  - XUnit for the API / server
   - Jest for UI
-- Automatic linting
-- Automatic prettier / formatting
-- Tooling
-  - VS Code for development environment
-- Support for testing - both API testing and UI testing (using Jest)
-- Build / debugging features:
+- Automatic linting - this should be a given.
+- Automatic prettier / formatting - this should also be a given.
+- Tooling - I'm going with VS Code as my development environment
+- Build & debugging features - I want all the modern development and debugging options too, for example:
   - Hot module loading (HML)
   - Debugging
-  - Linting
-  - Formatting
 
 # Tooling / Libraries / Frameworks
 The following base tools comprise my development toolchain:
@@ -196,66 +209,8 @@ The VSCode settings needs to be updated to work seamlessly with Prettier:
 }
 ```
 
-# Project Structure
-Before starting, the overall project structure needs to be defined. I've ended up going with the following structure:
-
-```
-project
-├── README.md                   # readme file
-├── LICENSE                     # licence file
-├── src/                        # source files
-|   ├── webapp-api/             # C# api project
-|   │   ├── Endpoints/          # Endpoints (minimal api) 
-|   │   ├── Models/             # model classes 
-|   │   ├── Modules/            # Modules / plugins to other frameworks 
-|   │       ├── Configuration/  # Configuration classes 
-|   │       ├── Data/           # Data layer classes 
-
-|   │   └── program.cs      # Entry-point 
-|   ├── webapp-ui/          # Vanilla js project
-|   │   ├── node_modules/
-|   │   ├── dist/
-|   │   ├── src/
-|   │       ├── index.html  # main entry page
-|   │       ├── assets/     # static assets (img etc)
-|   │       ├── css/        # site css
-|
-|   │       ├── js/
-|   │            ├── lib/
-|   │            ├── components/
-|   │            ├── components/
-|   │            ├── routes/
-|   │            ├── widgets/
-
-
-├── dist/
-
-├── dist/
-├── node_modules/
-├── src/
-│   ├── css/            # Stylesheet(s)
-│   │   ├── styles.css  # Stylesheet(s)
-│   ├── js/             # Script(s)
-│   │   ├── components/ # web components(s)
-│   │   ├── lib/        # Library / common
-│   │   ├── routes/     # Route(s)
-│   │   ├── widgets/    # Smaller static function component(s)
-│   │   ├── main.tsx    # Top-level component
-│   ├── public/         # Public resources (e.g. images)
-│   │   ├── logo.png    # Site image
-│   └ index.html        # Main HTML file
-├── README.md           # Project documentation
-├── .gitignore          # Git ignore
-├── .prettierignore     # Prettier ignore
-├── .eslint.config.mjs  # ESLint config
-├── package-lock.json   # package-lock file
-├── package.json        # package settings
-├── tsconfig.json       # TypeScript config
-└── vite.config.js      # Vite config
-```
-
 # Data Model
-Before starting with any code, the data model must be defined. The following data model will be used:
+Before starting with any code, the data model must be defined. The reference application is a simple blog site, and the following data model will be used:
 
 ## Post Entity
 The post entity stores information about posts:
@@ -270,7 +225,7 @@ The post entity stores information about posts:
 | CreatedDt   | DateTime  | not null     | The date/time the post was created |
 
 ## Comment Entity
-The comment entity stores comments for posts. Furthermore, a comment can also be made against another comment
+The comment entity stores comments for posts. To keep things simple, I've limited comments to only be allowed on posts. Comments cannot be written on other comments.
 
 | Column Name | Data Type | Constraints  | Description                        |
 | ----------- | --------- | ------------ | ---------------------------------- |
@@ -293,8 +248,24 @@ dotnet add package Dbarone.Net.JsonDataStore
 
 This creates a new webapi, and also includes the Dbarone.Net.JsonDataStore package used for data persistence.
 
+## Project Structure
+I've gone with the following project structure for the API:
+
+``` text
+├── api/
+    ├── bin/                          # outputs / binaries
+    |── Endpoints/                    # Endpoints (minimal api) 
+    |── Models/                       # model classes 
+    |── Modules/                      # Modules / plugins to other frameworks 
+    |   ├── Configuration/            # Configuration classes 
+    |   ├── Data/                     # Data layer classes 
+    ├── appsettings.Development.json  # The development application settings
+    ├── appsettings.json              # The production application settings
+    └── program.cs                    # The entry point
+```
+
 ## Configuration
-Development and production environments often require different configurations, for example connection information to databases. The ability to configure dev/prod environments has been configured as follows:
+Development and production environments often require different configurations, for example connection information to databases. The ability to configure development and production environments has been configured using custom configuration classes as follows:
 
 ### /Configuration/Api.Settings.cs
 This file models the custom configuration settings
@@ -751,6 +722,50 @@ The following defaults were provided:
 
 The project can then be opened in VSCode, and run. The default Vite test app runs. The following additional configuration was then applied:
 
+## Project Structure
+I've gone with the following structure for the UI project:
+
+Before starting, the overall project structure needs to be defined. I've ended up going with the following structure:
+
+``` text
+├── webapp-ui/              # Vanilla js project
+    ├── dist/               # The output / compiled UI
+    ├── node_modules/
+    ├── src/
+    │   ├── assets/         # Static assets (images etc)
+    │   │   ├── logo.png    # Site image
+    │   ├── css/            # Stylesheets
+    │   │   ├── styles.css  # The global stylesheet
+    │   ├── js/             # Scripts
+    │   │   ├── components/ # web components
+    │   │   ├── lib/        # Library / common functions and routines
+    │   │   ├── routes/     # Routes
+    │   │   ├── widgets/    # Function components
+    │   └ index.html        # Main HTML file
+    ├── README.md           # Project documentation
+    ├── .gitignore          # Git ignore
+    ├── .prettierignore     # Prettier ignore
+    ├── .prettierrc.json    # Prettier configuration
+    ├── .eslint.config.mjs  # ESLint config
+    ├── package-lock.json   # package-lock file
+    ├── package.json        # package settings
+    ├── tsconfig.json       # TypeScript config
+    └── vite.config.js      # Vite config
+```
+
+### A note on where to put files
+There are always arguments on where to put files. Do you group files by file type (e.g. put all css files together), or do you put files close to each other based on functionality. My approach is as follows:
+- Componentisation is the main driver. Split the application into components, and where possible put all files relating to a component together in the same folder (for example, .tsx file, .css files)
+- PropType definitions should be saved with the component or widget they belong to
+- API server routes should be saved in the same folder as the route. For example, if you have a `Posts` route which displays all the posts, there should be:
+  - postsRoute.tsx: This is the Posts UI component
+  - postsHttp.ts: This defines the posts server routes to the API
+  - api.types.js: This defines any custom types used by the API
+- However, there are exceptions to this:
+  - For global code (e.g. site.css), this should go into a separate /css folder
+  - If there are TypeScript types that are used by several components, put these types into a shared /types folder
+  - if there are http API calls used by multiple components, put these into a shared /server folder.
+
 ## Vite Configuration
 
 ### /vite.config.js
@@ -920,11 +935,11 @@ Notes:
 - When referencing classes, use `class={styles.nameofclass}` syntax instead of `className={styles.nameofclass}` This is because we're using the dom class attribute directly instead of React's virtual dom.
 
 ## JSX Support
-When building html content, using html strings everywhere is error-prone. JSX is a domain-specific language that enables developer to write HTML elements directly within their JavaScript code. JSX is primarily used in React, but TypeScript supports JSX too.
+When building html content, using html strings everywhere is error-prone. JSX is a domain-specific language that enables developers to write HTML elements directly within their JavaScript code. JSX is primarily used in React, but TypeScript supports JSX too.
 
 JSX compiles to JavaScript function calls like `createElement` that produce DOM elements. This means that JSX can be type-checked and syntax-checked at compile time. A great advantage over HTML strings.
 
-The following configuration was required to implement JSX:
+In order to use JSX, we need to implement a custom createElement function. The following configuration was required to implement JSX:
 
 ### /js/lib/createElement.js
 This is a custom `createElement` function to convert JSX into createElement() JavaScript function calls. The script also registers the function into the window object, so that it can be referenced later.
@@ -1283,6 +1298,31 @@ export class Component extends HTMLElement {
 }
 ```
 
+### Widgets
+The `Component` class above can be used to build components. This uses the Web Component framework. This comes with some downsides:
+- Forced to use classes - A result of using the Shadow DOM technology is that styles cannot be easily inherited in components. Whilst this is the intention (i.e. styles should be contained within a component), there are often needs for styling to be inherited downwards. After all, the 'C' in CSS refers to 'cascading'.
+- Forced to use classes to create custom elements - note that once custom elements have been created, you are not limited to classes to use them. Components can be injected within functions or anywhere else in your JavaScript code.
+
+To provide an additional lightweight way to create components, I've added a `/widgets` folder. Widgets have the following in common:
+- A widget generally exposes a single function which can be parameterised
+- The widget generally returns an HTML DOM fragment in the form of JSX
+- Widgets can use CSS Modules to scope styles. Widgets can also inherit styles from above, as they are not HTML Web Components, and have no ShadowDOM
+
+Out of the box, I've created the following widgets
+
+| Widget       | Purpose                               |
+| ------------ | ------------------------------------- |
+| appWidget    | The main entry point to the app.      |
+| buttonWidget | Creates a simple button.              |
+| footerWidget | Content for the footer of the app.    |
+| formWidget   | Creates a form for editing an object. |
+| headerWidget | Content for the header of the app.    |
+| inputWidget  | Creates a form element.               |
+| mainWidget   | Content for the main area of the app. |
+| modalWidget  | Creates a modal popout.               |
+| tableWidget  | Creates a table.                      |
+| toastWidget  | Create a toast component.             |
+
 ## Environment Variables
 The Vite framework supports environment variables via `.env` files (https://vite.dev/guide/env-and-mode). However, I've adopted to roll a simple DIY envionment variables approach:
 
@@ -1318,906 +1358,7 @@ At this point, the basic configuration is set up using ESLint, Prettier, typed C
 This is the default site icon.
 
 ### /src/css/style.css
-A default CSS file was added to /src/css/style.css. Note that no normalise.css or reset css is used, as modern browsers are generally consistent when it comes to CSS defaults. The following default CSS was used:
-``` css
-/* -----------------------------------------------
-A SIMPLE CSS STYLESHEET BASED ON
-SKELETON CSS (http://getskeleton.com/)
--------------------------------------------------- */
-
-/* -----------------------------------------------
- Table of contents
---------------------------------------------------
-- Base Styles
-- Typography
-- Links
-- Icon Links
-- Buttons
-- Forms
-- Modal Forms
-- Definitions
-- Lists
-- Code / Pre
-- Blockquote + cite
-- Tables
-- Tabbed dialog
-- Spacing
-- Utilities
-- Misc
-- Clearing
-- Colors
-- Page Elements
-*/
-
-/* -----------------------------------------------
- Base Styles
--------------------------------------------------- */
-
-:root,
-body,
-#app {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-}
-
-body {
-  font-family:
-    Inter, ui-sans-serif, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  color: #3c3c43;
-  overflow-y: scroll;
-  line-height: 1.5;
-  font-weight: 400;
-  font-size: 16px;
-  text-rendering: optimizeLegibility;
-  text-size-adjust: 100%;
-}
-
-.app {
-  display: flex;
-  flex-direction: column;
-  min-height: 100%;
-  box-sizing: border-box;
-}
-
-.route,
-main {
-  flex: 1 1;
-}
-
-/* ------------------------------------
- Typography
---------------------------------------- */
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-weight: 600;
-  line-height: 1.4;
-  color: rgb(61, 79, 93);
-  margin: 0px;
-}
-
-h1 {
-  font-size: 2em;
-  letter-spacing: -0.05em;
-}
-
-h2 {
-  font-size: 1.8em;
-  letter-spacing: -0.05em;
-}
-
-h3 {
-  font-size: 1.6em;
-  letter-spacing: -0.05em;
-}
-
-h4 {
-  font-size: 1.4em;
-  letter-spacing: -0.025em;
-}
-
-h5 {
-  font-size: 1.2em;
-  letter-spacing: -0.025em;
-}
-
-h6 {
-  font-size: 1em;
-  letter-spacing: 0;
-}
-
-/* -----------------------------------
- Links
--------------------------------------- */
-
-a {
-  color: #456789;
-  text-decoration: none;
-}
-
-a:hover {
-  color: #123456;
-}
-
-/* -----------------------------------
- Icon Links
--------------------------------------- */
-
-a.icon {
-  border: solid 0.2em #ddd;
-  padding: 0.2em;
-  border-radius: 2em;
-  cursor: pointer;
-}
-
-a.icon:hover {
-  border: solid 0.2em;
-  padding: 0.2em;
-  border-color: steelblue;
-  border-radius: 2em;
-  cursor: pointer;
-}
-
-.clickable-content:hover {
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-/* ----------------------------------
- Buttons
-------------------------------------- */
-
-.button,
-button,
-input[type='submit'],
-input[type='reset'],
-input[type='button'] {
-  display: inline-block;
-  height: 30px;
-  padding: 0 20px;
-  color: #555;
-  text-align: center;
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 30px;
-  /*letter-spacing: 0.1em;*/
-  /*text-transform: uppercase;*/
-  text-decoration: none;
-  white-space: nowrap;
-  background-color: transparent;
-  /*background-color: white;*/
-  border-radius: 4px;
-  border: 1px solid #bbb;
-  cursor: pointer;
-  box-sizing: border-box;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
-}
-
-.button:hover,
-button:hover,
-input[type='submit']:hover,
-input[type='reset']:hover,
-input[type='button']:hover,
-.button:focus,
-button:focus,
-input[type='submit']:focus,
-input[type='reset']:focus,
-input[type='button']:focus {
-  color: #333;
-  background-color: #ccc;
-  border-color: #888;
-  outline: 0;
-  transform: translateY(-0px);
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
-}
-
-.button.primary,
-button.primary,
-input[type='submit'].primary,
-input[type='reset'].primary,
-input[type='button'].primary {
-  color: #234567;
-  background-color: rgb(153, 204, 255); /* #33C3F0; */
-  border-color: transparent;
-  border-width: 1px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
-}
-
-.button.primary:hover,
-button.primary:hover,
-input[type='submit'].primary:hover,
-input[type='reset'].primary:hover,
-input[type='button'].primary:hover,
-.button.primary:focus,
-button.primary:focus,
-input[type='submit'].primary:focus,
-input[type='reset'].primary:focus,
-input[type='button'].primary:focus {
-  transform: translateY(-0px);
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
-}
-
-/* ---------------------------------------------
- Forms
------------------------------------------------- */
-
-input[type='email'],
-input[type='number'],
-input[type='search'],
-input[type='text'],
-input[type='checkbox'],
-input[type='radio'],
-input[type='tel'],
-input[type='url'],
-input[type='password'],
-textarea,
-select {
-  min-height: 30px;
-  min-width: 30px;
-  padding: 1px 6px; /* The 1px vertically centers text on FF, ignored by Webkit */
-  background-color: #fff;
-  border: 1px solid #d1d1d1;
-  border-radius: 4px;
-  box-shadow: none;
-  box-sizing: border-box;
-}
-
-input[type='checkbox'],
-input[type='radio'] {
-  min-height: 20px;
-  min-width: 20px;
-}
-
-/* form elements in tables slightly condensed */
-td > input[type='email'],
-td > input[type='number'],
-td > input[type='search'],
-td > input[type='text'],
-td > input[type='checkbox'],
-td > input[type='radio'],
-td > input[type='tel'],
-td > input[type='url'],
-td > input[type='password'],
-td > textarea,
-td > select {
-  min-height: 20px;
-}
-
-textarea {
-  min-height: 65px;
-  padding: 4px 6px;
-}
-
-input[type='email']:focus,
-input[type='number']:focus,
-input[type='search']:focus,
-input[type='text']:focus,
-input[type='radio']:focus,
-input[type='checkbox']:focus,
-input[type='tel']:focus,
-input[type='url']:focus,
-input[type='password']:focus,
-textarea:focus,
-select:focus {
-  border: 1px solid #33c3f0;
-  outline: 0;
-}
-
-/* readonly forms */
-input[readonly] {
-  background: #eee;
-  color: #666;
-}
-
-form p {
-  margin-top: 9px;
-}
-
-label,
-legend {
-  display: block;
-  font-weight: 600;
-}
-
-fieldset {
-  padding: 6px;
-  border: 1px solid #ccc;
-  border-width: 1px;
-  border-radius: 4px;
-  /*box-shadow: 12px 12px 5px #666;*/
-}
-
-input[type='checkbox'],
-input[type='radio'] {
-  display: inline;
-}
-
-form label {
-  text-align: left;
-}
-
-/* v-align any text element immediately after radio button */
-form input[type='radio'] + *,
-form input[type='checkbox'] + * {
-  line-height: 20px;
-  vertical-align: top;
-  padding-left: 6px;
-  margin-right: 20px;
-}
-
-/* ---------------------------------------------
- Modal Forms
------------------------------------------------- */
-
-.modal {
-  /*display: none; */ /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 99; /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0, 0, 0); /* Fallback color */
-  background-color: rgba(0, 0, 0, 0.6); /* Black w/ opacity */
-}
-
-/* Modal Content/Box */
-.modal-content {
-  background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%; /* Could be more or less, depending on screen size */
-}
-
-/* ---------------------------------------------
- definitions
------------------------------------------------- */
-
-dl {
-  border: 3px double #ccc;
-  padding: 0.5em;
-}
-
-dl * {
-  display: none;
-  float: left;
-}
-
-dl:after {
-  content: '';
-  display: table;
-  clear: both;
-}
-
-dt {
-  visibility: visible;
-  width: 25%;
-  text-align: right;
-  font-weight: bold;
-  display: inline-block;
-  color: rgb(61, 79, 93);
-  box-sizing: border-box;
-  padding-right: 3px;
-  margin: 0px;
-}
-
-dt:after {
-  content: ':';
-}
-
-dd {
-  visibility: visible;
-  width: 75%;
-  text-align: left;
-  display: inline-block;
-  box-sizing: border-box;
-  padding-left: 3px;
-  margin: 0px;
-}
-
-/* ---------------------------------------------
- Lists
------------------------------------------------- */
-
-ul {
-  list-style: disc inside;
-}
-
-ol {
-  list-style: decimal inside;
-}
-
-ol,
-ul {
-  padding-left: 0;
-  margin-top: 0.5em;
-}
-
-ul ul,
-ul ol,
-ol ol,
-ol ul {
-  margin: 0.5em 0 0.5em 3em;
-  font-size: 90%;
-}
-
-li {
-  margin-bottom: 0.25em;
-}
-
-/* ---------------------------------------------
- Code / Pre
------------------------------------------------- */
-
-code {
-  padding: 0.2em 0.5em;
-  margin: 0 0.2em;
-  font-size: 90%;
-  white-space: nowrap;
-  background: #f1f1f1;
-  border: 1px solid #e1e1e1;
-  border-radius: 4px;
-  font-family: 'Courier New', monospace;
-}
-
-pre {
-  font-family: sans-serif, 'Helvetica Neue', Helvetica, Arial;
-}
-
-pre > code {
-  display: block;
-  padding: 1em 1.5em;
-  white-space: pre;
-}
-
-/* ---------------------------------------------
- Blockquote + cite
------------------------------------------------- */
-
-blockquote {
-  border-left: 10px solid rgb(61, 79, 93);
-  background: #f9f9f9;
-  font-family: Georgia, serif;
-  font-style: italic;
-  margin: 0.25em 0;
-  padding: 0.25em 60px;
-  line-height: 1.45;
-  position: relative;
-  color: #383838;
-}
-
-blockquote:before {
-  display: block;
-  content: '\201C';
-  font-size: 60px;
-  position: absolute;
-  left: 20px;
-  top: 0px;
-  color: #7a7a7a;
-}
-
-blockquote cite {
-  color: #999999;
-  font-size: 14px;
-  display: block;
-  margin-top: 5px;
-}
-
-blockquote cite:before {
-  content: '\2014 \2009';
-}
-
-/* ---------------------------------------------
- Tables
------------------------------------------------- */
-
-th,
-td {
-  padding: 6px 12px;
-  text-align: left;
-  border-bottom: 1px solid #c1c1c1;
-}
-
-th {
-  background-color: rgb(153, 204, 255);
-}
-
-/* second header line (filter bar?) normal font */
-tr:nth-child(2) > th {
-  font-weight: 400;
-}
-
-/* filter elements on table headers */
-th > input {
-  margin: 0px;
-  padding: 0px;
-  box-sizing: border-box;
-}
-
-/* ---------------------------------------------
- Tabbed dialog
------------------------------------------------- */
-
-ul.tab-nav {
-  list-style: none;
-  border-bottom: 1px solid #bbb;
-  padding-left: 5px;
-}
-
-ul.tab-nav li {
-  display: inline;
-}
-
-ul.tab-nav li a.button {
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-  margin-bottom: -1px;
-  border-bottom: none;
-}
-
-ul.tab-nav li a.active.button {
-  border-bottom: 1px solid #fff;
-}
-
-.tab-content .tab-pane {
-  display: none;
-}
-
-.tab-content .tab-pane.active {
-  display: block;
-}
-
-/* ---------------------------------------------
- Spacing
------------------------------------------------- */
-
-button,
-.button,
-input,
-textarea,
-select,
-fieldset,
-pre,
-blockquote,
-dl,
-figure,
-table,
-p,
-ul,
-ol,
-form {
-  margin-bottom: 0.5em;
-}
-
-td > button,
-td > .button,
-td > input,
-td > textarea,
-td > select,
-td > fieldset,
-td > pre,
-td > blockquote,
-td > dl,
-td > figure,
-td > table,
-td > p,
-td > ul,
-td > ol,
-td > form {
-  margin-bottom: 0em;
-}
-
-/* ---------------------------------------------
- Utilities
------------------------------------------------- */
-
-.full-width {
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.half-width {
-  width: 50%;
-  box-sizing: border-box;
-}
-
-.third-width {
-  width: 33%;
-  box-sizing: border-box;
-}
-
-.quarter-width {
-  width: 25%;
-  box-sizing: border-box;
-}
-
-.tiny-width {
-  width: 50px;
-}
-
-.max-full-width {
-  max-width: 100%;
-  box-sizing: border-box;
-}
-
-.pull-right {
-  float: right;
-}
-
-.pull-left {
-  float: left;
-}
-
-.inline {
-  display: inline;
-}
-
-.center-block {
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
-}
-
-.align-center {
-  text-align: center;
-}
-
-/* ---------------------------------------------
- Misc
------------------------------------------------- */
-
-hr {
-  margin-top: 2em;
-  margin-bottom: 2em;
-  border-width: 0;
-  border-top: 1px solid #e1e1e1;
-}
-
-/* ---------------------------------------------
- Clearing
------------------------------------------------- */
-
-/* Self Clearing Goodness */
-.container:after,
-.container-fixed:after,
-.row:after,
-.clear-float {
-  content: '';
-  display: table;
-  clear: both;
-}
-
-/* ---------------------------------------------
- Colors
------------------------------------------------- */
-
-.background-grey {
-  background: grey;
-}
-
-.color-grey {
-  color: grey;
-}
-
-.background-blue {
-  background: rgb(61, 79, 93);
-}
-
-.color-blue {
-  color: rgb(61, 79, 93);
-}
-
-.background-white {
-  background: white;
-}
-
-.color-white {
-  color: white;
-}
-
-.background-yellow {
-  background: rgb(255, 255, 204);
-}
-
-.color-yellow {
-  color: rgb(255, 255, 204);
-}
-
-.background-green {
-  background: rgb(204, 255, 204);
-}
-
-.color-green {
-  color: rgb(204, 255, 204);
-}
-
-.background-red {
-  background: rgb(255, 204, 204);
-}
-
-.color-red {
-  color: rgb(255, 204, 204);
-}
-
-/* ---------------------------------------------
- Page Elements
------------------------------------------------- */
-
-header {
-  position: fixed;
-  height: 40px;
-  top: 0px;
-  width: 100%;
-  z-index: 999;
-  /*opacity: 0.9;*/
-  background: #222;
-  color: white;
-  padding: 0px;
-}
-
-.header-down {
-  top: 0px;
-  transition: top 1s;
-}
-
-.header-up {
-  top: -40px;
-  transition: top 1s;
-}
-
-/* main after header starts 40px down */
-header + main {
-  margin-top: 40px;
-}
-
-main {
-  padding-top: 0.1px; /* to stop collapsing margins */
-}
-
-.route {
-  padding: 12px;
-}
-
-header a {
-  color: #999;
-  float: left;
-  margin-right: 18px;
-  height: 40px;
-  line-height: 40px;
-  padding: 0px 16px;
-}
-
-header a:hover {
-  color: white;
-  background: #333;
-}
-
-nav {
-  background: #dadada;
-  color: black;
-  font-weight: 500;
-  height: 40px;
-  line-height: 40px;
-  margin-bottom: 6px 0;
-  border: 1px solid rgb(61, 79, 93);
-  border-top: 0px solid rgb(61, 79, 93);
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px;
-  padding: 0px;
-}
-
-nav a {
-  padding: 0px 8px;
-  float: left;
-  height: 40px;
-  line-height: 40px;
-  border-left: 8px solid transparent;
-}
-
-nav a:hover {
-  background: #aaa;
-  border-left: 8px solid black;
-}
-
-.title {
-  background: rgb(61, 79, 93);
-  color: white;
-  font-size: 2em;
-  font-weight: 500;
-  height: 100px;
-  line-height: 100px;
-  overflow: hidden;
-  text-indent: 12px;
-}
-
-.logo {
-  text-align: center;
-  vertical-align: middle;
-}
-
-footer {
-  background: rgb(61, 79, 93);
-  text-align: center;
-  margin-top: 1em;
-  padding: 1em;
-  color: white;
-}
-
-.panel,
-.message {
-  padding: 4px;
-  margin: 0.5em 0;
-  border-width: 0.1em;
-  border-radius: 0.2em;
-  margin-bottom: 1em;
-  font-weight: 500;
-  border-color: #ddd;
-}
-
-.message {
-  position: fixed;
-  top: 1%;
-  left: 1%;
-  width: 98%;
-  z-index: 999;
-  box-sizing: border-box;
-}
-
-.error {
-  background: rgb(255, 204, 204);
-  border: 1px solid red;
-  border-left: 10px solid red;
-  padding: 12px;
-}
-
-.error > ul {
-  margin-bottom: 0px;
-}
-
-.success {
-  background: rgb(204, 255, 204);
-  border: 1px solid green;
-  border-left: 10px solid green;
-  padding: 12px;
-}
-
-.sticky-note-green {
-  border-left: 12px solid green;
-}
-
-.sticky-note-red {
-  border-left: 12px solid red;
-}
-
-.sticky-note-yellow {
-  border-left: 12px solid yellow;
-}
-
-.sticky-note-white {
-  border-left: 12px solid lightgrey;
-}
-``` 
- 
-
-
-
-
+A default CSS file was added to /src/css/style.css. Note that no normalise.css or reset css is used, as modern browsers are generally consistent when it comes to CSS defaults.
 
 ### /src/index.html
 The root page was updated to reference a new root tsx file: `app.tsx`:
@@ -2270,7 +1411,6 @@ The following can be found in the /src/js/widgets folder:
 - header: Provides a simple header bar that disappears when the user scrolls down the page.
 - main: The main content area. Uses routing to change the content based on the url path.
 - footer: A simple footer bar. 
-
 
 ## Environment Variables (Dev, Prod)
 
