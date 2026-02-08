@@ -1,6 +1,6 @@
-import styles from '@root/js/widgets/footer/footer.module.css';
+import styles from '@root/js/widgets/footerWidget/footerWidget.module.css';
 
-export default function Footer() {
+export default function FooterWidget() {
   return (
     <footer class={styles.footer}>
       <div>David Barone: https://www.dbarone.com</div>

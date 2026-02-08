@@ -1,9 +1,9 @@
-import styles from '@root/js/widgets/table/table.module.css';
-import { FormWidget } from '@root/js/widgets/form/formWidget';
-import { ModalWidget } from '@root/js/widgets/modal/modalWidget';
+import styles from '@root/js/widgets/tableWidget/tableWidget.module.css';
+import { FormWidget } from '@root/js/widgets/formWidget/formWidget';
+import { ModalWidget } from '@root/js/widgets/modalWidget/modalWidget';
 import { reactiveValue } from '@root/js/lib/reactive';
-import { Button } from '@root/js/widgets/button/button';
-import { type FormFieldType } from '@root/js/widgets/form/formWidget';
+import { ButtonWidget } from '@root/js/widgets/buttonWidget/buttonWidget';
+import { type FormFieldType } from '@root/js/widgets/formWidget/formWidget';
 
 /**
  * Defines a mapping dictionary. Each element consist of:
@@ -14,7 +14,7 @@ interface MappingDictionary<T> {
   [Key: string]: (row: T) => HTMLElement;
 }
 
-type TablePropsType<T> = {
+type TableWidgetPropsType<T> = {
   data: Array<T>;
   visible: boolean;
   listMapping: MappingDictionary<T>;
@@ -28,7 +28,7 @@ type TablePropsType<T> = {
  * @returns
  */
 export function TableWidget<DataType extends { id: number }>(
-  props: TablePropsType<DataType>
+  props: TableWidgetPropsType<DataType>
 ): HTMLDivElement {
   console.log(styles);
 
@@ -70,14 +70,14 @@ export function TableWidget<DataType extends { id: number }>(
               ))}
               <td>
                 {/* Add edit button */}
-                {Button({
+                {ButtonWidget({
                   label: 'Edit',
                   click: () => {
                     editRow(row);
                   },
                 })}
                 {/* Add delete button */}
-                {Button({
+                {ButtonWidget({
                   label: 'Delete',
                   click: () => {
                     props.onDelete(row);

@@ -16,6 +16,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@root': resolve(__dirname, './src'), // Alias for the src / root folder
+      '@widgets': resolve(__dirname, './src/js/widgets'), // Alias for the src/js/widgets folder
+      '@routes': resolve(__dirname, './src/js/routes'), // Alias for the src/js/routes folder
     },
   },
 });

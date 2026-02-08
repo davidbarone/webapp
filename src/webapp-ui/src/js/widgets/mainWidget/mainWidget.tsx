@@ -1,8 +1,8 @@
 import logo from '@root/assets/logo.png';
 import { type RouteRuleArray, router } from '@root/js/lib/router.tsx';
-import styles from '@root/js/widgets/main/main.module.css';
+import styles from '@root/js/widgets/mainWidget/mainWidget.module.css';
 
-export default function Main(routes: RouteRuleArray) {
+export default function MainWidget(routes: RouteRuleArray) {
   router(routes, 'route');
   return (
     <main class={styles.main}>

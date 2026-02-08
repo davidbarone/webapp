@@ -1,6 +1,6 @@
-import styles from './input.module.css';
+import styles from './inputWidget.module.css';
 import { type ReactiveValueType } from '@root/js/lib/reactive';
-interface InputPropsType {
+interface InputWidgetPropsType {
   name: string;
   type:
     | 'input'
@@ -33,7 +33,7 @@ interface InputPropsType {
   value: ReactiveValueType<string | number>;
 }
 
-const Input = (props: InputPropsType): HTMLDivElement => {
+const InputWidget = (props: InputWidgetPropsType): HTMLDivElement => {
   const onInput = (e: any) => {
     const val =
       e.target.type === 'checkbox' ? e.target.checked : e.target.value;
@@ -85,4 +85,4 @@ const Input = (props: InputPropsType): HTMLDivElement => {
   );
 };
 
-export { Input };
+export { InputWidget };

@@ -1,6 +1,6 @@
-import styles from './button.module.css';
+import styles from './buttonWidget.module.css';
 
-interface ButtonPropsType {
+interface ButtonWidgetPropsType {
   title?: string;
   label: string | undefined;
   visible?: boolean;
@@ -8,7 +8,7 @@ interface ButtonPropsType {
   href?: string | undefined;
 }
 
-const Button = (props: ButtonPropsType): HTMLButtonElement => {
+const ButtonWidget = (props: ButtonWidgetPropsType): HTMLButtonElement => {
   const doClick = (e: MouseEvent): void => {
     if (props.href) {
       window.location.href = props.href;
@@ -29,4 +29,4 @@ const Button = (props: ButtonPropsType): HTMLButtonElement => {
   );
 };
 
-export { Button };
+export { ButtonWidget };

@@ -1,14 +1,14 @@
 import { getPosts, deletePost, initPosts } from './postsHttp';
-import { TableWidget } from '@root/js/widgets/table/table';
+import { TableWidget } from '@root/js/widgets/tableWidget/tableWidget';
 import { type PostType } from '@root/js/routes/postsRoute/api.types';
-import { Button } from '@root/js/widgets/button/button';
+import { ButtonWidget } from '@root/js/widgets/buttonWidget/buttonWidget';
 import { showToast } from '@root/js/widgets/toastWidget/toastWidget';
 
 async function render() {
   const posts = await getPosts();
   const initContent = (
     <>
-      {Button({
+      {ButtonWidget({
         label: 'Reset',
         visible: true,
         click: () => {

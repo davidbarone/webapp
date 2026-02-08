@@ -1,5 +1,5 @@
 import { reactiveValue } from '@root/js/lib/reactive';
-import { Input } from '@root/js/widgets/input/input';
+import { InputWidget } from '@root/js/widgets/inputWidget/inputWidget.tsx';
 
 export type FormFieldType<T> = {
   name: string;
@@ -48,7 +48,7 @@ export function FormWidget<DataType>(
 ): HTMLFormElement {
   const keys = Object.keys(props.fields);
   const inputs = keys.map((k) =>
-    Input({
+    InputWidget({
       name: props.fields[k].name,
       label: props.fields[k].label,
       type: props.fields[k].type,
