@@ -1,5 +1,5 @@
 import { reactiveValue } from '@root/js/lib/reactive';
-import { InputWidget } from '@root/js/widgets/inputWidget/inputWidget.tsx';
+import { InputWidget } from '@widgets/inputWidget/inputWidget.tsx';
 
 export type FormFieldType<T> = {
   name: string;

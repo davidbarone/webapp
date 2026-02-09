@@ -1,6 +1,6 @@
 import { type ReactiveValueType } from '@root/js/lib/reactive';
-import styles from '@root/js/widgets/modalWidget/modalWidget.module.css';
-import { ButtonWidget } from '@root/js/widgets/buttonWidget/buttonWidget';
+import styles from '@widgets/modalWidget/modalWidget.module.css';
+import { ButtonWidget } from '@widgets/buttonWidget/buttonWidget';
 
 interface ModalPropsType {
   visibility: ReactiveValueType<boolean>;

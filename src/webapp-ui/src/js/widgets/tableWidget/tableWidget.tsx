@@ -1,9 +1,9 @@
 import styles from '@root/js/widgets/tableWidget/tableWidget.module.css';
-import { FormWidget } from '@root/js/widgets/formWidget/formWidget';
-import { ModalWidget } from '@root/js/widgets/modalWidget/modalWidget';
+import { FormWidget } from '@widgets/formWidget/formWidget';
+import { ModalWidget } from '@widgets/modalWidget/modalWidget';
 import { reactiveValue } from '@root/js/lib/reactive';
-import { ButtonWidget } from '@root/js/widgets/buttonWidget/buttonWidget';
-import { type FormFieldType } from '@root/js/widgets/formWidget/formWidget';
+import { ButtonWidget } from '@widgets/buttonWidget/buttonWidget';
+import { type FormFieldType } from '@widgets/formWidget/formWidget';
 
 /**
  * Defines a mapping dictionary. Each element consist of:
