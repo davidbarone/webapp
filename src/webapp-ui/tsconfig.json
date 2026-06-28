@@ -1,10 +1,9 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
     "paths": {
-      "@root/*": ["src/*"],
-      "@routes/*": ["src/js/routes/*"],
-      "@widgets/*": ["src/js/widgets/*"]
+      "@root/*": ["./src/*"],
+      "@routes/*": ["./src/js/routes/*"],
+      "@widgets/*": ["./src/js/widgets/*"]
     },
     "target": "ES2022",
     "jsx": "react",

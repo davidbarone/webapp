@@ -2,6 +2,7 @@ import '@root/css/style.css';
 import '../../lib/createElement.js';
 import '../../lib/createFragment.js';
 import HomeRoute from '@routes/homeRoute';
+import TestRoute from '@routes/testRoute';
 import ReactiveRoute from '@routes/reactiveRoute';
 import PostsRoute from '@routes/postsRoute/postsRoute.js';
 import { type RouteRuleArray } from '@root/js/lib/router';
@@ -16,6 +17,7 @@ const routes: RouteRuleArray = [
   { name: 'Home', path: '/', handler: HomeRoute },
   { name: 'Posts', path: '/posts', handler: PostsRoute },
   { name: 'Reactive', path: '/reactive', handler: ReactiveRoute },
+  { name: 'Test', path: '/test', handler: TestRoute },
 ];
 
 const x = (

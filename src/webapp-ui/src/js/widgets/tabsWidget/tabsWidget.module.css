@@ -1,0 +1,32 @@
+.tabs {
+  max-width: 400px;
+  margin: 20px;
+  font-family: sans-serif;
+}
+.tabButtons {
+  display: flex;
+  border-bottom: 2px solid #ccc;
+}
+.tabButtons button {
+  flex: 1;
+  padding: 10px;
+  cursor: pointer;
+  background: #f2f2f2;
+  border: none;
+  border-right: 1px solid #ccc;
+}
+.tabButtons button.active {
+  background: #fff;
+  font-weight: bold;
+  border-bottom: 2px solid #fff;
+}
+.tabContent {
+  display: none;
+  padding: 15px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+.tabContent.active {
+  display: block;
+}
