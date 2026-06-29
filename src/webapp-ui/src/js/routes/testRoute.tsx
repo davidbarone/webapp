@@ -3,7 +3,7 @@ import { TabsWidget } from '@root/js/widgets/tabsWidget/tabsWidget.tsx';
 export default function TestRoute() {
   return (
     <>
-      <h1>Tab Widget</h1>
+      <h1>Tabs Widget</h1>
       {TabsWidget({
         tabs: [
           {
@@ -14,7 +14,7 @@ export default function TestRoute() {
                 <h2>Tab #1</h2>This is contents of tab 1.
               </>
             ),
-            default: true,
+            default: false,
           },
           {
             id: 'tab2',
@@ -24,7 +24,7 @@ export default function TestRoute() {
                 <h2>Tab #2</h2>This is contents of tab 2.
               </>
             ),
-            default: false,
+            default: true,
           },
           {
             id: 'tab3',

@@ -29,18 +29,18 @@ const initTabs = () => {
         if (!targetId) return;
 
         // Deactivate all buttons
-        buttons.forEach((btn) => btn.classList.remove(styles.active));
+        buttons.forEach((btn) => btn.classList.remove('active'));
 
         // Activate clicked button
-        button.classList.add(styles.active);
+        button.classList.add('active');
 
         // Deactivate all content panels
-        contents.forEach((content) => content.classList.remove(styles.active));
+        contents.forEach((content) => content.classList.remove('active'));
 
         // Activate target content if exists
         const target = container.querySelector('#' + targetId);
         if (target) {
-          target.classList.add(styles.active);
+          target.classList.add('active');
         }
       });
     });
@@ -51,9 +51,7 @@ export const TabsWidget = (props: TabsPropsType) => {
   const tabs = props.tabs.map((t) => (
     <div
       class={
-        t.default
-          ? [styles.tabContent, styles.active].join(' ')
-          : styles.tabContent
+        t.default ? [styles.tabContent, 'active'].join(' ') : styles.tabContent
       }
       id={t.id}
     >
@@ -66,7 +64,7 @@ export const TabsWidget = (props: TabsPropsType) => {
       <div class={styles.tabs} id="example-tabs">
         <div class={styles.tabButtons}>
           {props.tabs.map((t) => (
-            <button data-tab={t.id} className={styles.active}>
+            <button data-tab={t.id} class={t.default ? 'active' : ''}>
               {t.title}
             </button>
           ))}
@@ -76,6 +74,8 @@ export const TabsWidget = (props: TabsPropsType) => {
     </>
   );
 
+  //https://developer.mozilla.org/en-US/docs/Web/API/Window/queueMicrotask
+  // Need to run initTabs after the content is attached to the DOM.
   queueMicrotask(() => {
     initTabs();
   });

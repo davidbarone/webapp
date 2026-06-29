@@ -1,25 +1,36 @@
 .tabs {
-  max-width: 400px;
-  margin: 20px;
-  font-family: sans-serif;
+  font-family: inherit;
 }
+
 .tabButtons {
-  display: flex;
-  border-bottom: 2px solid #ccc;
+  border-bottom: 1px solid #bbb;
 }
+
 .tabButtons button {
-  flex: 1;
-  padding: 10px;
+  padding: 2px 24px;
   cursor: pointer;
-  background: #f2f2f2;
-  border: none;
-  border-right: 1px solid #ccc;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  margin-bottom: -1px;
+  border-bottom: none;
+  box-shadow: none;
 }
-.tabButtons button.active {
-  background: #fff;
-  font-weight: bold;
-  border-bottom: 2px solid #fff;
+
+.tabButtons button:global(.active) {
+  border-bottom: none;
+  background-color: rgb(153, 204, 255);
 }
+
+.tabButtons button:hover {
+  border-bottom: none;
+  background-color: #ccc;
+}
+
+.tabButtons button:focus {
+  border-bottom: none;
+  background-color: rgb(153, 204, 255);
+}
+
 .tabContent {
   display: none;
   padding: 15px;
@@ -27,6 +38,7 @@
   border: 1px solid #ccc;
   border-top: none;
 }
-.tabContent.active {
+
+.tabContent:global(.active) {
   display: block;
 }
